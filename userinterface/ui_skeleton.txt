@@ -1,0 +1,30 @@
+class trackMenu{
+// Class to manipulate tracks
+//author: Caroleen Chen
+private:
+	
+public: 
+  String trackName;
+  //Calls displayTrack to create a list
+  void displayTrackList {}
+  //function to display names of all tracks available
+  void displayTrack {}
+  //function to display the current track’s MIDI selected
+  //will use midiDisplay (See: Notation)
+  void displayCurrentTrack {}
+  //Displays track information
+  void displayTrackInfo {}
+  //add and remove tracks
+  void addTrack {}
+  void deleteTrack {}
+};
+
+class midiDisplay {
+// See: Notation
+//author:Martin Marshalek
+};
+
+class midiPlay {
+// See: Notation
+//author:Martin Marshalek
+};
