@@ -1,3 +1,7 @@
+/*midi_message.h
+ * The file is about all the character and functions in midi event
+ * Aurthor: ERWEI ZHU
+ */
 
 #ifndef _midi_event_HH
 #define _midi_event_HH
