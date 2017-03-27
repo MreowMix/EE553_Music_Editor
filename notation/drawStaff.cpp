@@ -7,6 +7,8 @@
 #include <iostream>
 using namespace std;
 
+#define MEASURE_LEN 210
+
 class drawStaff{
 private:
     string clef, timesig, keysig;
@@ -16,7 +18,9 @@ private:
     QPainter p;
 public:
 
-    drawStaff(string c = "treble", string t = "3/4", string k = "C", int x = 0, int y = 0) : clef(c), timesig(t), keysig(k), pos_x(x), pos_y(y), p(&pi){}
+    drawStaff(string c = "treble", string t = "4/4", 
+              string k = "C", int x = 0, int y = 0) : 
+              clef(c), timesig(t), keysig(k), pos_x(x), pos_y(y), p(&pi){}
     // Create a new blank measure, with flags for begin/end
     void newMeasure(bool isBegin = false, bool isEnd = false) {
         p.setRenderHint(QPainter::Antialiasing);
@@ -34,7 +38,8 @@ public:
             if (clef == "treble"){
                 // Draw a treble clef a the beginning of the staff
                 p.setFont(QFont("Norfolk Std", 30));
-                p.drawText(pos_x+2, pos_y+28 , "&"); // Positioning depends on what is being drawn    
+                // Positioning depends on what is being drawn 
+                p.drawText(pos_x+2, pos_y+28 , "&");    
             }
             else if (clef == "bass") {
 
@@ -57,14 +62,14 @@ public:
         
         //expand for note grids
 
-        p.drawLine(pos_x, pos_y, pos_x+180, pos_y);
-        p.drawLine(pos_x, pos_y+10, pos_x+180, pos_y+10);
-        p.drawLine(pos_x, pos_y+20, pos_x+180, pos_y+20);
-        p.drawLine(pos_x, pos_y+30, pos_x+180, pos_y+30);
-        p.drawLine(pos_x, pos_y+40, pos_x+180, pos_y+40);
+        p.drawLine(pos_x, pos_y, pos_x+MEASURE_LEN, pos_y);
+        p.drawLine(pos_x, pos_y+10, pos_x+MEASURE_LEN, pos_y+10);
+        p.drawLine(pos_x, pos_y+20, pos_x+MEASURE_LEN, pos_y+20);
+        p.drawLine(pos_x, pos_y+30, pos_x+MEASURE_LEN, pos_y+30);
+        p.drawLine(pos_x, pos_y+40, pos_x+MEASURE_LEN, pos_y+40);
 
 
-        pos_x = pos_x + 180;
+        pos_x = pos_x + MEASURE_LEN;
         if (isEnd) {
             p.setPen(QPen(Qt::black, 4, Qt::SolidLine, Qt::SquareCap));
             p.drawLine(pos_x, pos_y+1, pos_x, pos_y+39);
@@ -77,14 +82,59 @@ public:
             p.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::SquareCap)); 
         }
 
-        if (pos_x >= 1000) {
+        if (pos_x >= MEASURE_LEN*5+100) {
             pos_x = 0;
             pos_y = pos_y + 80;
         }
     }
 
     // Add notes blank measure created by newMeasure method
-    void addNotes() {}
+    void drawNotes(char note, int octave, char duration, int startIndex) {
+        bool temp_pos = false;
+        if (pos_y > 0 && pos_x == 0) {
+            pos_y = pos_y - 80;
+            pos_x = MEASURE_LEN*5+100;
+            temp_pos = true;
+        }
+        
+        double ind_mod = 0.0;
+        int index = 0;
+        p.setRenderHint(QPainter::Antialiasing);
+        p.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::SquareCap));
+        
+        if (timesig == "4/4") {
+            ind_mod = (double)MEASURE_LEN / (double)(16 + 2);
+        }
+
+        index = (startIndex * ind_mod) - MEASURE_LEN;
+        if (note == 'a') {
+            if (octave == 3) {
+                if (duration == 'q') {
+                    p.setFont(QFont("Norfolk Std", 26));
+                    p.drawText(pos_x + index, pos_y+25 , "q");
+                }   
+            }
+        }
+        else if (note == 'c') {
+
+        }
+        else if (note == 'd') {
+
+        }
+        else if (note == 'e') {
+
+        }
+        else if (note == 'f') {
+
+        }
+        else if (note == 'g') {
+
+        }
+        if (temp_pos) {
+            pos_y = pos_y + 80;
+            pos_x = 0;
+        }
+    }
 
     // Add additional markings - to be added last
     // void addOrnamentation() {}
@@ -102,10 +152,23 @@ int main(int argc, char *argv[])
 
     drawStaff staff;
     staff.newMeasure(true, false);
+    // Draws notes on the previously created staff
+    staff.drawNotes('a', 3, 'q', 1);
+    staff.drawNotes('a', 3, 'q', 5);
+    staff.drawNotes('a', 3, 'q', 9);
+    staff.drawNotes('a', 3, 'q', 13);
     for (int i = 0; i < 20; i++) {
         staff.newMeasure(false, false);
+        staff.drawNotes('a', 3, 'q', 1);
+        staff.drawNotes('a', 3, 'q', 5);
+        staff.drawNotes('a', 3, 'q', 9);
+        staff.drawNotes('a', 3, 'q', 13);
     }
     staff.newMeasure(false, true);
+    staff.drawNotes('a', 3, 'q', 1);
+    staff.drawNotes('a', 3, 'q', 5);
+    staff.drawNotes('a', 3, 'q', 9);
+    staff.drawNotes('a', 3, 'q', 13);
     staff.display();
     return a.exec();
 }
