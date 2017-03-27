@@ -88,7 +88,7 @@ public:
         }
     }
 
-    // Add notes blank measure created by newMeasure method
+    // Add notes to blank measure created by newMeasure method
     void drawNotes(char note, int octave, char duration, int startIndex) {
         bool temp_pos = false;
         if (pos_y > 0 && pos_x == 0) {
@@ -146,9 +146,9 @@ public:
     }
 };
 
-int main(int argc, char *argv[])
+int main()
 {
-    QApplication a(argc, argv);
+    QApplication a;
 
     drawStaff staff;
     staff.newMeasure(true, false);
