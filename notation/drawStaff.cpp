@@ -106,12 +106,24 @@ public:
             ind_mod = (double)MEASURE_LEN / (double)(16 + 2);
         }
 
+        else if (timesig == "3/4") {
+            ind_mod = (double)MEASURE_LEN / (double)(12 + 2);
+        }
+
         index = (startIndex * ind_mod) - MEASURE_LEN;
         if (note == 'a') {
-            if (octave == 3) {
+            if (octave == 4) {
                 if (duration == 'q') {
                     p.setFont(QFont("Norfolk Std", 26));
                     p.drawText(pos_x + index, pos_y+25 , "q");
+                }   
+            }
+        }
+        else if (note == 'b') {
+            if (octave == 4) {
+                if (duration == 'q') {
+                    p.setFont(QFont("Norfolk Std", 26));
+                    p.drawText(pos_x + index, pos_y+20 , "Q");
                 }   
             }
         }
@@ -146,9 +158,9 @@ public:
     }
 };
 
-int main()
+int main(int argc, char *argv[])
 {
-    QApplication a;
+    QApplication a(argc, argv);
 
     drawStaff staff;
     // create first measure , isBegin = true isEnd = false
@@ -156,22 +168,14 @@ int main()
     // Draws notes on the previously created staff
     // displays an a3 quarter note on the treble clef
     // the index values correspond to the position left-right on the measure
-    staff.drawNotes('a', 3, 'q', 1);
-    staff.drawNotes('a', 3, 'q', 5);
-    staff.drawNotes('a', 3, 'q', 9);
-    staff.drawNotes('a', 3, 'q', 13);
+    staff.drawNotes('b', 4, 'q', 1);
+    staff.drawNotes('b', 4, 'q', 5);
+    staff.drawNotes('b', 4, 'q', 9);
+    staff.drawNotes('b', 4, 'q', 13);
     for (int i = 0; i < 20; i++) {
         staff.newMeasure(false, false);
-        staff.drawNotes('a', 3, 'q', 1);
-        staff.drawNotes('a', 3, 'q', 5);
-        staff.drawNotes('a', 3, 'q', 9);
-        staff.drawNotes('a', 3, 'q', 13);
     }
     staff.newMeasure(false, true);
-    staff.drawNotes('a', 3, 'q', 1);
-    staff.drawNotes('a', 3, 'q', 5);
-    staff.drawNotes('a', 3, 'q', 9);
-    staff.drawNotes('a', 3, 'q', 13);
     staff.display();
     return a.exec();
 }
