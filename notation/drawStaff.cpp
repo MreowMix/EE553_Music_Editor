@@ -128,19 +128,44 @@ public:
             }
         }
         else if (note == 'c') {
-
+            if (octave == 4) {
+                if (duration == 'q') {
+                    p.setFont(QFont("Norfolk Std", 26));
+                    p.drawText(pos_x + index, pos_y+15 , "Q");
+                }   
+            }
         }
         else if (note == 'd') {
-
+            if (octave == 4) {
+                if (duration == 'q') {
+                    p.setFont(QFont("Norfolk Std", 26));
+                    p.drawText(pos_x + index, pos_y+10 , "Q");
+                }   
+            }
         }
         else if (note == 'e') {
-
+            if (octave == 4) {
+                if (duration == 'q') {
+                    p.setFont(QFont("Norfolk Std", 26));
+                    p.drawText(pos_x + index, pos_y+5 , "Q");
+                }   
+            }
         }
         else if (note == 'f') {
-
+            if (octave == 4) {
+                if (duration == 'q') {
+                    p.setFont(QFont("Norfolk Std", 26));
+                    p.drawText(pos_x + index, pos_y+0 , "Q");
+                }   
+            }
         }
         else if (note == 'g') {
-
+            if (octave == 4) {
+                if (duration == 'q') {
+                    p.setFont(QFont("Norfolk Std", 26));
+                    p.drawText(pos_x + index, pos_y-5 , "Q");
+                }   
+            }
         }
         if (temp_pos) {
             pos_y = pos_y + 80;
@@ -168,10 +193,10 @@ int main(int argc, char *argv[])
     // Draws notes on the previously created staff
     // displays an a3 quarter note on the treble clef
     // the index values correspond to the position left-right on the measure
-    staff.drawNotes('b', 4, 'q', 1);
-    staff.drawNotes('b', 4, 'q', 5);
-    staff.drawNotes('b', 4, 'q', 9);
-    staff.drawNotes('b', 4, 'q', 13);
+    staff.drawNotes('d', 4, 'q', 1);
+    staff.drawNotes('e', 4, 'q', 5);
+    staff.drawNotes('f', 4, 'q', 9);
+    staff.drawNotes('g', 4, 'q', 13);
     for (int i = 0; i < 20; i++) {
         staff.newMeasure(false, false);
     }
