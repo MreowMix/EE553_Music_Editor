@@ -111,60 +111,93 @@ public:
         }
 
         index = (startIndex * ind_mod) - MEASURE_LEN;
-        if (note == 'a') {
-            if (octave == 4) {
-                if (duration == 'q') {
-                    p.setFont(QFont("Norfolk Std", 26));
-                    p.drawText(pos_x + index, pos_y+25 , "q");
-                }   
+        if (clef == "treble") {
+            if (note == 'a') {
+                if (octave == 4) {
+                    if (duration == 'q') {
+                        p.setFont(QFont("Norfolk Std", 26));
+                        p.drawText(pos_x + index, pos_y+25 , "q");
+                    }   
+                }
             }
-        }
-        else if (note == 'b') {
-            if (octave == 4) {
-                if (duration == 'q') {
-                    p.setFont(QFont("Norfolk Std", 26));
-                    p.drawText(pos_x + index, pos_y+20 , "Q");
-                }   
+            else if (note == 'b') {
+                if (octave == 4) {
+                    if (duration == 'q') {
+                        p.setFont(QFont("Norfolk Std", 26));
+                        p.drawText(pos_x + index, pos_y+20 , "Q");
+                    }   
+                }
             }
-        }
-        else if (note == 'c') {
-            if (octave == 4) {
-                if (duration == 'q') {
-                    p.setFont(QFont("Norfolk Std", 26));
-                    p.drawText(pos_x + index, pos_y+15 , "Q");
-                }   
+            else if (note == 'c') {
+                if (octave == 4) {
+                    if (duration == 'q') {
+                        p.setFont(QFont("Norfolk Std", 26));
+                        p.drawText(pos_x + index, pos_y+50 , "q");
+                        p.drawLine(pos_x + index - 2, pos_y+50, pos_x + index + 16, pos_y+50); // draw ledger line
+                    }   
+                }
+                else if (octave == 5) {
+                    if (duration == 'q') {
+                        p.setFont(QFont("Norfolk Std", 26));
+                        p.drawText(pos_x + index, pos_y+15 , "Q");
+                    }   
+                }
             }
-        }
-        else if (note == 'd') {
-            if (octave == 4) {
-                if (duration == 'q') {
-                    p.setFont(QFont("Norfolk Std", 26));
-                    p.drawText(pos_x + index, pos_y+10 , "Q");
-                }   
+            else if (note == 'd') {
+                if (octave == 4) {
+                    if (duration == 'q') {
+                        p.setFont(QFont("Norfolk Std", 26));
+                        p.drawText(pos_x + index, pos_y+45 , "q");
+                    }   
+                }
+                else if (octave == 5) {
+                    if (duration == 'q') {
+                        p.setFont(QFont("Norfolk Std", 26));
+                        p.drawText(pos_x + index, pos_y+10 , "Q");
+                    }   
+                }
             }
-        }
-        else if (note == 'e') {
-            if (octave == 4) {
-                if (duration == 'q') {
-                    p.setFont(QFont("Norfolk Std", 26));
-                    p.drawText(pos_x + index, pos_y+5 , "Q");
-                }   
+            else if (note == 'e') {
+                if (octave == 4) {
+                    if (duration == 'q') {
+                        p.setFont(QFont("Norfolk Std", 26));
+                        p.drawText(pos_x + index, pos_y+40 , "q");
+                    }   
+                }
+                else if (octave == 5) {
+                    if (duration == 'q') {
+                        p.setFont(QFont("Norfolk Std", 26));
+                        p.drawText(pos_x + index, pos_y+5 , "Q");
+                    }   
+                }
             }
-        }
-        else if (note == 'f') {
-            if (octave == 4) {
-                if (duration == 'q') {
-                    p.setFont(QFont("Norfolk Std", 26));
-                    p.drawText(pos_x + index, pos_y+0 , "Q");
-                }   
+            else if (note == 'f') {
+                if (octave == 4) {
+                    if (duration == 'q') {
+                        p.setFont(QFont("Norfolk Std", 26));
+                        p.drawText(pos_x + index, pos_y+35 , "q");
+                    }   
+                }
+                else if (octave == 5) {
+                    if (duration == 'q') {
+                        p.setFont(QFont("Norfolk Std", 26));
+                        p.drawText(pos_x + index, pos_y+0 , "Q");
+                    }   
+                }
             }
-        }
-        else if (note == 'g') {
-            if (octave == 4) {
-                if (duration == 'q') {
-                    p.setFont(QFont("Norfolk Std", 26));
-                    p.drawText(pos_x + index, pos_y-5 , "Q");
-                }   
+            else if (note == 'g') {
+                if (octave == 4) {
+                    if (duration == 'q') {
+                        p.setFont(QFont("Norfolk Std", 26));
+                        p.drawText(pos_x + index, pos_y+30 , "q");
+                    }   
+                }
+                else if (octave == 5) {
+                    if (duration == 'q') {
+                        p.setFont(QFont("Norfolk Std", 26));
+                        p.drawText(pos_x + index, pos_y-5 , "Q");
+                    }   
+                }
             }
         }
         if (temp_pos) {
@@ -193,14 +226,26 @@ int main(int argc, char *argv[])
     // Draws notes on the previously created staff
     // displays an a3 quarter note on the treble clef
     // the index values correspond to the position left-right on the measure
-    staff.drawNotes('d', 4, 'q', 1);
-    staff.drawNotes('e', 4, 'q', 5);
-    staff.drawNotes('f', 4, 'q', 9);
+    staff.drawNotes('c', 4, 'q', 1);
+    staff.drawNotes('d', 4, 'q', 5);
+    staff.drawNotes('e', 4, 'q', 9);
+    staff.drawNotes('f', 4, 'q', 13);    
+    staff.newMeasure(false, false);
+    staff.drawNotes('g', 4, 'q', 1);
+    staff.drawNotes('a', 4, 'q', 5);
+    staff.drawNotes('b', 4, 'q', 9);
+    staff.drawNotes('c', 5, 'q', 13);
+    staff.newMeasure(false, false);
+    staff.drawNotes('c', 5, 'q', 1);
+    staff.drawNotes('b', 4, 'q', 5);
+    staff.drawNotes('a', 4, 'q', 9);
     staff.drawNotes('g', 4, 'q', 13);
-    for (int i = 0; i < 20; i++) {
-        staff.newMeasure(false, false);
-    }
     staff.newMeasure(false, true);
+    staff.drawNotes('f', 4, 'q', 1);
+    staff.drawNotes('e', 4, 'q', 5);
+    staff.drawNotes('d', 4, 'q', 9);
+    staff.drawNotes('c', 4, 'q', 13);         
+    //staff.newMeasure(false, true);
     staff.display();
     return a.exec();
 }
