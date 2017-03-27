@@ -151,8 +151,11 @@ int main()
     QApplication a;
 
     drawStaff staff;
+    // create first measure , isBegin = true isEnd = false
     staff.newMeasure(true, false);
     // Draws notes on the previously created staff
+    // displays an a3 quarter note on the treble clef
+    // the index values correspond to the position left-right on the measure
     staff.drawNotes('a', 3, 'q', 1);
     staff.drawNotes('a', 3, 'q', 5);
     staff.drawNotes('a', 3, 'q', 9);
