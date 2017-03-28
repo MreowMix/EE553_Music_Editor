@@ -4,7 +4,6 @@
 #include <QPainter>
 #include <QFont>
 #include <string>
-#include <iostream>
 using namespace std;
 
 #define MEASURE_LEN 240
@@ -61,7 +60,6 @@ public:
         }
         
         //expand for note grids
-
         p.drawLine(pos_x, pos_y, pos_x+MEASURE_LEN, pos_y);
         p.drawLine(pos_x, pos_y+10, pos_x+MEASURE_LEN, pos_y+10);
         p.drawLine(pos_x, pos_y+20, pos_x+MEASURE_LEN, pos_y+20);
@@ -141,12 +139,16 @@ public:
                     if (duration == 'q') {
                         p.setFont(QFont("Norfolk Std", 26));
                         p.drawText(pos_x + index, pos_y+50 , "q");
-                        p.drawLine(pos_x + index - 2, pos_y+50, pos_x + index + 16, pos_y+50); // draw ledger line
+                        // draw ledger line
+                        p.drawLine(pos_x + index - 2, pos_y+50,
+                                   pos_x + index + 16, pos_y+50);
                     }
                     else if (duration == 'e') {
                         p.setFont(QFont("Norfolk Std", 26));
                         p.drawText(pos_x + index, pos_y+50 , "e");
-                        p.drawLine(pos_x + index - 2, pos_y+50, pos_x + index + 16, pos_y+50); // draw ledger line
+                        // draw ledger line
+                        p.drawLine(pos_x + index - 2, pos_y+50,
+                                   pos_x + index + 16, pos_y+50);
                     }   
                 }
                 else if (octave == 5) {
