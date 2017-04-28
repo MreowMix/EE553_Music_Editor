@@ -13,15 +13,21 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">MainWindow{background-color: black}</string>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QPushButton" name="quitButton">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>180</y>
+      <y>190</y>
       <width>268</width>
       <height>32</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton#quitButton { background-color: blue; font: 87 14pt &quot;Arial Black&quot;;}</string>
     </property>
     <property name="text">
      <string>Quit</string>
@@ -46,6 +52,10 @@
       <height>32</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton#generateButton { background-color: blue; font: 87 14pt &quot;Arial Black&quot;; }
+</string>
+    </property>
     <property name="text">
      <string>Generate New Staff</string>
     </property>
@@ -59,6 +69,9 @@
       <height>32</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton#displayButton {background-color: blue; font: 87 14pt &quot;Arial Black&quot;;}</string>
+    </property>
     <property name="text">
      <string>Display Track List</string>
     </property>
@@ -71,6 +84,10 @@
       <width>181</width>
       <height>41</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel#label {color: white;font: 75 13pt &quot;American Typewriter&quot;; }
+</string>
     </property>
     <property name="text">
      <string>MUSIC EDITOR Vers. 0.2</string>
