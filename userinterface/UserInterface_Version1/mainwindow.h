@@ -9,6 +9,7 @@ class MainWindow;
 
 class MainWindow : public QMainWindow
 {
+    MainWindow *createMWin = new MainWindow();
     Q_OBJECT //this macro must come first in the class declaration
 
 public:
@@ -20,6 +21,8 @@ private slots: //slot is a function call triggered by an event signal on the UI
     //function to exit application upon click
     void on_quitButton_clicked();
 
+    void on_createButton_clicked();
+
     void on_actionOpen_MIDI_triggered();
 
     void on_actionSave_MIDI_triggered();
@@ -27,5 +30,6 @@ private slots: //slot is a function call triggered by an event signal on the UI
 private:
     Ui::MainWindow *ui;
 };
+
 
 #endif // MAINWINDOW_H

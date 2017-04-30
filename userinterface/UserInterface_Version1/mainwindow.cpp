@@ -16,12 +16,21 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+
 // Action functions for Main Window ///////////
 
 //action for quit button press
 void MainWindow::on_quitButton_clicked()
 {
     QCoreApplication::quit(); //adds quit slot to quitButton widget
+}
+
+//action for Create Midi file option
+void MainWindow::on_createButton_clicked()
+{
+    createMWin->show();
+    this->hide();
 }
 
 //action for Open Midi file option
