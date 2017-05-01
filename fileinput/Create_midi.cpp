@@ -176,7 +176,3 @@ void WriteHeaderApp1(vector<unsigned char> data){
 void Create(){
 
 }
-
-
-
-
