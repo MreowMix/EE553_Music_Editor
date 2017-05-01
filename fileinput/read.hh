@@ -4,4 +4,3 @@
 void Read(const char* filename,int file_size);
 
 #endif // READ_HH
-
