@@ -21,6 +21,5 @@ vector<unsigned char> Nota_event;
 
 
 
-
 #endif // MIDI_HH
 
