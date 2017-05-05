@@ -198,8 +198,8 @@ public:
         //return duration;   
     }
 
-    void buildArray(){
-        vector<note> noteArray(128);
+    vector<note> buildArray(){
+        vector<note> noteArray;
         double curTime, curDuration;
         int measureIndexTot;
         int qpm;
@@ -211,8 +211,9 @@ public:
         int curIndexMax = measureIndexTot;
         // iterate through all events 
         for (int event = 0; event < midifile[0].size() ; event++){
+            int i = 0;
             if (midifile[0][event].isNoteOn() == 1) {
-                
+            note restTemp, noteTemp;
                 if ((midifile[0][event-1].isNoteOff() == 1) && ((int)midifile[0][event].tick - (int)midifile[0][event-1].tick > tpq/(qpm/2) - 1)) {
                     int restIndex = getNotePos((int)midifile[0][event-1].tick);
                     int restTickDuration = (int)midifile[0][event].tick - (int)midifile[0][event-1].tick;
@@ -224,7 +225,14 @@ public:
                     }
                     restIndex = restIndex - (measureIndexTot * curMeasure);
                     //cout << "Rest @ " << (int)midifile[0][event-1].tick << " Duration: " << restDuration << " Index " << restIndex << endl;
-                    cout << "r " << "0 " <<  restDuration << " " << restIndex << endl; 
+                    cout << "r " << "0 " <<  restDuration << " " << restIndex << endl;
+
+                    restTemp.noteName = "r";
+                    restTemp.octave = 0;
+                    restTemp.duration = restDuration;
+                    restTemp.index = restIndex;
+
+                    noteArray.push_back(restTemp); 
                 }
                 
                 
@@ -244,8 +252,15 @@ public:
                 string noteRhythm = rhythmType(curDuration);
                 //cout << pitchTable[curNote].noteName << " " << pitchTable[curNote].octave << " Index: "<< curIndex << endl;
                 cout << pitchTable[curNote].noteName << " " << pitchTable[curNote].octave << " " << noteRhythm << " " << curIndex << endl;
+                noteTemp.noteName = pitchTable[curNote].noteName;
+                noteTemp.octave = pitchTable[curNote].octave;
+                noteTemp.duration = noteRhythm;
+                noteTemp.index = curIndex;
+
+                noteArray.push_back(noteTemp);
             }
         }
+        return noteArray;
     }
 
 
@@ -254,9 +269,9 @@ public:
 
 int main(){
     readMidi test;
+    vector<note> noteTest = test.buildArray();
 
     cout << dec << test.keysig << endl;
     cout << test.getTimeSig() << endl;
-    test.buildArray();
     return 0;
 }
