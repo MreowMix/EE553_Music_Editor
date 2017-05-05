@@ -160,6 +160,35 @@ public:
   void completeDrawing() {
       p->end();
   }
+
+  void readVector(vector<note> notes) {
+      int xstart = 10, ystart = 10;
+      int maxIndex;
+      if(this->timesig=="4/4")
+          maxIndex = 16;
+      else if(this->timesig=="3/4")
+          maxIndex = 12;
+      else if(this->timesig == "2/4")
+          maxIndex = 8;
+      else if(this->timesig=="6/8")
+          maxIndex = 12;
+      else
+          maxIndex = 16;
+      drawPage(xstart, ystart);
+      for(int i = 0; i < notes.size(); i++) {
+          if (notes[i].index == maxIndex) {
+              addNotes(xstart, ystart, notes[i].noteName, notes[i].octave, notes[i].duration, notes[i].index);
+              ystart = ystart + 50;
+          }
+          addNotes(xstart, ystart, notes[i].noteName, notes[i].octave, notes[i].duration, notes[i].index);
+          if(ystart > 1000) {
+              addPage();
+              ystart = 10;
+          }
+      }
+      completeDrawing();
+
+  }
 };
 
 
