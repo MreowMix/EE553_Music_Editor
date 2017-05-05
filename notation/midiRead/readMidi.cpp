@@ -193,6 +193,7 @@ public:
         else if (duration == 0.49) {return "e";}
         else if (duration == 0.24) {return "s";}
         else if (duration == 0.74) {return "de";}
+        else if (duration == 0.33) {return "trip";}
         else if (duration == 1.49) {return "dq";}
         //return duration;   
     }
