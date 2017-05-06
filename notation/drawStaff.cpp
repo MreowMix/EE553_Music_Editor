@@ -415,39 +415,19 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
 
-
-
-    /*
-    // create first measure , isBegin = true isEnd = false
-    staff.newMeasure(true, false);
-    // Draws notes on the previously created staff
-    // displays an a3 quarter note on the treble clef
-    // the index values correspond to the position left-right on the measure
-    staff.drawNotes("a", 4, "s", 1);
-    staff.drawNotes("gsh", 4, "dh", 5);
-    staff.drawNotes("gfl", 5, "dq", 9);
-    staff.drawNotes("r", 4, "dh", 13);    
-    staff.display();
-    */
-
-    readMidi myMidi("numberOfTheBeast.mid");
+    readMidi myMidi("vivaldiSpring.mid");
     drawStaff staff("treble", myMidi.timesig);
     vector<note> noteArray = myMidi.buildArray();
-    //qDebug() << "KeySig: " << test.keysig;
-    //qDebug() << "TimeSig: " <<test.getTimeSig();
 
-    
     for (int i = 0; i < noteArray.size(); i++) {
-        //qDebug() << "Note " << i << ": " << noteTest[i].noteName << "RhythmType: " << noteTest[i].duration << "Index: " << noteTest[i].index;
         if (noteArray[i].index == 1) {
             if (i == 0) {staff.newMeasure(true, false);}
             else {staff.newMeasure(false, false);}    
         }
+        qDebug() << "[" << i << "]" << noteArray[i].noteName << noteArray[i].octave << noteArray[i].duration << noteArray[i].index;
         staff.drawNotes(noteArray[i].noteName, noteArray[i].octave, noteArray[i].duration, noteArray[i].index);
     }
+
     staff.display();
-
-    //return 0;
-
     return a.exec();
 }

@@ -215,10 +215,10 @@ public:
             if (midifile[0][event].isNoteOn() == 1) {
             note restTemp, noteTemp;
                 if (((midifile[0][event-1].isNoteOff() == 1) && ((int)midifile[0][event].tick - (int)midifile[0][event-1].tick > tpq/(qpm/2) - 1)) || 
-                   ((midifile[0][event].isNoteOn() == 1) && (midifile[0][event-1].isNoteOff() == 0) && ((int)midifile[0][event].tick > 0))) {
+                   ((midifile[0][event].isNoteOn() == 1) && (midifile[0][event-1].isNoteOff() == 0) && ((int)midifile[0][event-1].tick == 0))) {
                     int restTickDuration, restIndex;
                     
-                    if ((midifile[0][event].isNoteOn() == 1) && (midifile[0][event-1].isNoteOff() == 0) && ((int)midifile[0][event].tick > 0)) {
+                    if ((midifile[0][event].isNoteOn() == 1) && (midifile[0][event-1].isNoteOff() == 0) && ((int)midifile[0][event-1].tick == 0)) {
                         restTickDuration = (int)midifile[0][event].tick;
                         restIndex = 1;
                     }
