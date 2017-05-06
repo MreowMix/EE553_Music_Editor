@@ -430,7 +430,7 @@ int main(int argc, char *argv[])
     staff.display();
     */
 
-    readMidi myMidi("vivaldiSpring.mid");
+    readMidi myMidi("numberOfTheBeast.mid");
     drawStaff staff("treble", myMidi.timesig);
     vector<note> noteArray = myMidi.buildArray();
     //qDebug() << "KeySig: " << test.keysig;
