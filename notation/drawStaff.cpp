@@ -415,7 +415,7 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
 
-    drawStaff staff;
+
 
     /*
     // create first measure , isBegin = true isEnd = false
@@ -430,14 +430,24 @@ int main(int argc, char *argv[])
     staff.display();
     */
 
-    readMidi test("vivaldiSpring.mid");
-    vector<note> noteTest = test.buildArray();
-    qDebug() << "KeySig: " << test.keysig;
-    qDebug() << "TimeSig: " <<test.getTimeSig();
-    for (int i = 0; i < noteTest.size(); i++) {
-        qDebug() << "Note " << i << ": " << noteTest[i].noteName;
-    }
-    return 0;
+    readMidi myMidi("vivaldiSpring.mid");
+    drawStaff staff("treble", myMidi.timesig);
+    vector<note> noteArray = myMidi.buildArray();
+    //qDebug() << "KeySig: " << test.keysig;
+    //qDebug() << "TimeSig: " <<test.getTimeSig();
 
-    //return a.exec();
+    
+    for (int i = 0; i < noteArray.size(); i++) {
+        //qDebug() << "Note " << i << ": " << noteTest[i].noteName << "RhythmType: " << noteTest[i].duration << "Index: " << noteTest[i].index;
+        if (noteArray[i].index == 1) {
+            if (i == 0) {staff.newMeasure(true, false);}
+            else {staff.newMeasure(false, false);}    
+        }
+        staff.drawNotes(noteArray[i].noteName, noteArray[i].octave, noteArray[i].duration, noteArray[i].index);
+    }
+    staff.display();
+
+    //return 0;
+
+    return a.exec();
 }

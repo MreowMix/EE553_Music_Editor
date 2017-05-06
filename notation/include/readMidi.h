@@ -186,16 +186,16 @@ public:
     string rhythmType(double duration) {
         duration = duration / (double)tpq;
         duration = floor(duration * 100) / 100;
-        if (duration == 0.99) {return "q";}
-        else if (duration == 1.99) {return "h";}
-        else if (duration == 3.99) {return "w";}
-        else if (duration == 2.99) {return "dh";}
-        else if (duration == 0.49) {return "e";}
-        else if (duration == 0.24) {return "s";}
-        else if (duration == 0.74) {return "de";}
-        else if (duration == 0.33) {return "trip";}
-        else if (duration == 1.49) {return "dq";}
-        else {return "q";}
+        //cout << duration << endl;
+        if ((duration > 0.85) && (duration < 1.15)) {return "q";}
+        else if ((duration > 1.85) && (duration < 2.15)) {return "h";}
+        else if ((duration > 3.85) && (duration < 4.15)) {return "w";}
+        else if ((duration > 2.85) && (duration < 3.15)) {return "dh";}
+        else if ((duration > 0.40) && (duration < 0.60)) {return "e";}
+        else if ((duration > 0.20) && (duration < 0.30)) {return "s";}
+        else if ((duration > 0.65) && (duration < 0.85)) {return "de";}
+        else if ((duration > 1.35) && (duration < 1.65)) {return "dq";}
+        //else {return "q";}
         //return duration;   
     }
 
@@ -214,9 +214,18 @@ public:
         for (int event = 0; event < midifile[0].size() ; event++){
             if (midifile[0][event].isNoteOn() == 1) {
             note restTemp, noteTemp;
-                if ((midifile[0][event-1].isNoteOff() == 1) && ((int)midifile[0][event].tick - (int)midifile[0][event-1].tick > tpq/(qpm/2) - 1)) {
-                    int restIndex = getNotePos((int)midifile[0][event-1].tick);
-                    int restTickDuration = (int)midifile[0][event].tick - (int)midifile[0][event-1].tick;
+                if (((midifile[0][event-1].isNoteOff() == 1) && ((int)midifile[0][event].tick - (int)midifile[0][event-1].tick > tpq/(qpm/2) - 1)) || 
+                   ((midifile[0][event].isNoteOn() == 1) && (midifile[0][event-1].isNoteOff() == 0) && ((int)midifile[0][event].tick > 0))) {
+                    int restTickDuration, restIndex;
+                    
+                    if ((midifile[0][event].isNoteOn() == 1) && (midifile[0][event-1].isNoteOff() == 0) && ((int)midifile[0][event].tick > 0)) {
+                        restTickDuration = (int)midifile[0][event].tick;
+                        restIndex = 1;
+                    }
+                    else {
+                        restIndex = getNotePos((int)midifile[0][event-1].tick);
+                        restTickDuration = (int)midifile[0][event].tick - (int)midifile[0][event-1].tick;
+                    }
                     string restDuration = rhythmType(restTickDuration);
 
                     if (restIndex > curIndexMax) {
