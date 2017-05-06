@@ -1,15 +1,14 @@
 // Required includes to use Craig Sapp's "midifile" library
-#include "midifile-include/MidiFile.h"
-#include "midifile-include/MidiFile.cpp"
-#include "midifile-include/MidiEvent.h"
-#include "midifile-include/MidiEvent.cpp"
-#include "midifile-include/MidiEventList.h"
-#include "midifile-include/MidiEventList.cpp"
-#include "midifile-include/MidiMessage.h"
-#include "midifile-include/MidiMessage.cpp"
-#include "midifile-include/Binasc.h"
-#include "midifile-include/Binasc.cpp"
-
+#include "midifile/MidiFile.h"
+#include "midifile/MidiFile.cpp"
+#include "midifile/MidiEvent.h"
+#include "midifile/MidiEvent.cpp"
+#include "midifile/MidiEventList.h"
+#include "midifile/MidiEventList.cpp"
+#include "midifile/MidiMessage.h"
+#include "midifile/MidiMessage.cpp"
+#include "midifile/Binasc.h"
+#include "midifile/Binasc.cpp"
 #include <iostream>
 #include <cmath>
 #include <string>
@@ -21,7 +20,7 @@ int main() {
     // midi tracks
     int tracks = 0;
     MidiFile midifile;
-    midifile.read("hyruleField_museri.mid");
+    midifile.read("vivaldiSpring.mid");
 
     tpq = midifile.getTicksPerQuarterNote();
     tracks = midifile.getTrackCount();

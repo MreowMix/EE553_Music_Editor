@@ -1,14 +1,14 @@
 // Required includes to use Craig Sapp's "midifile" library
-#include "midifile-include/MidiFile.h"
-#include "midifile-include/MidiFile.cpp"
-#include "midifile-include/MidiEvent.h"
-#include "midifile-include/MidiEvent.cpp"
-#include "midifile-include/MidiEventList.h"
-#include "midifile-include/MidiEventList.cpp"
-#include "midifile-include/MidiMessage.h"
-#include "midifile-include/MidiMessage.cpp"
-#include "midifile-include/Binasc.h"
-#include "midifile-include/Binasc.cpp"
+#include "midifile/MidiFile.h"
+#include "midifile/MidiFile.cpp"
+#include "midifile/MidiEvent.h"
+#include "midifile/MidiEvent.cpp"
+#include "midifile/MidiEventList.h"
+#include "midifile/MidiEventList.cpp"
+#include "midifile/MidiMessage.h"
+#include "midifile/MidiMessage.cpp"
+#include "midifile/Binasc.h"
+#include "midifile/Binasc.cpp"
 // End of "midifile" includes
 
 #include <iostream>
@@ -146,11 +146,11 @@ public:
             if ((midifile[0][event][0] == 0xff) && 
                 (midifile[0][event][1] == 0x59) && 
                 (midifile[0][event][2] == 0x02)) {
-                signed char keychar = midifile[0][event][3];
+                unsigned char keychar = midifile[0][event][3];
                 ks = keychar;
+                return ks;
             }
         }
-        return ks;
     }
 
     string getTimeSig() {
@@ -165,7 +165,7 @@ public:
 
                 return ts;
             }
-        }    
+        }   
     }
 
     int getNotePos(int startTime){
@@ -195,6 +195,7 @@ public:
         else if (duration == 0.74) {return "de";}
         else if (duration == 0.33) {return "trip";}
         else if (duration == 1.49) {return "dq";}
+        else {return "q";}
         //return duration;   
     }
 
@@ -211,7 +212,6 @@ public:
         int curIndexMax = measureIndexTot;
         // iterate through all events 
         for (int event = 0; event < midifile[0].size() ; event++){
-            int i = 0;
             if (midifile[0][event].isNoteOn() == 1) {
             note restTemp, noteTemp;
                 if ((midifile[0][event-1].isNoteOff() == 1) && ((int)midifile[0][event].tick - (int)midifile[0][event-1].tick > tpq/(qpm/2) - 1)) {
@@ -224,8 +224,6 @@ public:
                         curIndexMax = curIndexMax + measureIndexTot;
                     }
                     restIndex = restIndex - (measureIndexTot * curMeasure);
-                    //cout << "Rest @ " << (int)midifile[0][event-1].tick << " Duration: " << restDuration << " Index " << restIndex << endl;
-                    cout << "r " << "0 " <<  restDuration << " " << restIndex << endl;
 
                     restTemp.noteName = "r";
                     restTemp.octave = 0;
@@ -250,8 +248,6 @@ public:
 
                 curDuration = (int)midifile[0][event].getTickDuration();
                 string noteRhythm = rhythmType(curDuration);
-                //cout << pitchTable[curNote].noteName << " " << pitchTable[curNote].octave << " Index: "<< curIndex << endl;
-                cout << pitchTable[curNote].noteName << " " << pitchTable[curNote].octave << " " << noteRhythm << " " << curIndex << endl;
                 noteTemp.noteName = pitchTable[curNote].noteName;
                 noteTemp.octave = pitchTable[curNote].octave;
                 noteTemp.duration = noteRhythm;
@@ -266,7 +262,7 @@ public:
 
 };
 
-
+/*
 int main(){
     readMidi test;
     vector<note> noteTest = test.buildArray();
@@ -275,3 +271,4 @@ int main(){
     cout << test.getTimeSig() << endl;
     return 0;
 }
+*/

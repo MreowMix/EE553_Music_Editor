@@ -3,12 +3,23 @@
 #include <QPicture>
 #include <QPainter>
 #include <QFont>
+#include <QDebug>
 #include <string>
 #include <iostream>
 #include <sstream>
+
+#include "include/readMidi.h"
 using namespace std;
 
 #define MEASURE_LEN 240
+
+
+QDebug operator<<(QDebug out, const std::string& str)
+{
+    out << QString::fromStdString(str);
+    return out;
+}
+
 
 class drawStaff{
 private:
@@ -401,9 +412,12 @@ public:
 
 int main(int argc, char *argv[])
 {
+
     QApplication a(argc, argv);
 
     drawStaff staff;
+
+    /*
     // create first measure , isBegin = true isEnd = false
     staff.newMeasure(true, false);
     // Draws notes on the previously created staff
@@ -414,5 +428,16 @@ int main(int argc, char *argv[])
     staff.drawNotes("gfl", 5, "dq", 9);
     staff.drawNotes("r", 4, "dh", 13);    
     staff.display();
-    return a.exec();
+    */
+
+    readMidi test("vivaldiSpring.mid");
+    vector<note> noteTest = test.buildArray();
+    qDebug() << "KeySig: " << test.keysig;
+    qDebug() << "TimeSig: " <<test.getTimeSig();
+    for (int i = 0; i < noteTest.size(); i++) {
+        qDebug() << "Note " << i << ": " << noteTest[i].noteName;
+    }
+    return 0;
+
+    //return a.exec();
 }
