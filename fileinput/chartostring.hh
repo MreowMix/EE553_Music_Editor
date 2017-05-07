@@ -1,3 +1,5 @@
+//Because i need to use these tranformations to read the data and print out with the requests of the editor 
+
 #ifndef CHARTOSTRING_HH
 #define CHARTOSTRING_HH
 
