@@ -1,7 +1,3 @@
-//
-// Programmer:    Craig Stuart Sapp <craig@ccrma.stanford.edu>
-// Creation Date: Mon Feb 16 12:26:32 PST 2015 Adapted from binasc program.
-// Last Modified: Thu Feb 18 21:03:54 PST 2016 Added quoted string literals.
 // Filename:      midifile/src-library/Binasc.cpp
 // Syntax:        C++11
 // vim:           ts=3 expandtab
