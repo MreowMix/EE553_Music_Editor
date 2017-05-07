@@ -116,4 +116,3 @@ class Binasc {
 #endif /* _BINASC_H_INCLUDED */
 
 
-
