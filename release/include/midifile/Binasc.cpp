@@ -34,7 +34,6 @@ Binasc::~Binasc() {
 }
 
 
-
 //////////////////////////////
 //
 // Binasc::setLineLength -- Set the maximum length of a line when converting
