@@ -10,24 +10,35 @@
 
 using namespace std;
 
-
+//get head data
 extern vector<unsigned char> Head_Data;
+//get track data
 extern vector<unsigned char> Track_Data;
+//get track length
 extern vector<unsigned char> Track_Length;
+//get track event
 extern vector<unsigned char> Track_event;
+//get meta type
 extern vector<unsigned char> Meta_Type;
+//get meta length
 extern vector<unsigned char> Meta_Length;
+//get meta event
 extern vector<unsigned char> Meta_event;
+//get notation event
 extern vector<unsigned char> Nota_event;
-extern void Read(const char* file);
-extern void Read(const char* filename,int file_size);
+//read filename and file size
+extern void Read(const char* temp,int file_size);
+
+//transfer char to printout
 char CharTrans(int n);
+//transfer byte to string
 string ByteToString(unsigned char n);
+//transfer int to string
 string intTostring(int n);
 
 
 
-
+//This class is for reading the data in byte of a midi file
 class Midifile{
 private:
       long size;
@@ -76,6 +87,9 @@ public:
 
 };
 
+//This class is for reading the Header Chunk data of a midi file
+//A Header Chunk is structured as: MThd + Header length + Format + Track Number + Tick Speed
+//Seperate the data with the mark "\r\n"
 class Header:public Midifile{
 private:
     unsigned char *ff_ff;
@@ -134,6 +148,7 @@ public:
         return *this;
     }
 
+    //get Format
     vector<unsigned char> GetFormat(){
         vector<unsigned char> format;
         for(int i=0;i<2;i++){
@@ -144,6 +159,7 @@ public:
         return format;
     }
 
+     //get track number in byte
     vector<unsigned char> GetTrackNumChar(){
         vector<unsigned char> Num;
         for(int i=0;i<2;i++){
@@ -154,6 +170,7 @@ public:
         return Num;
     }
 
+    //get speed in byte
     vector<unsigned char> GetDIV(){
         vector<unsigned char> DIV;
         for(int i=0;i<2;i++){
@@ -164,6 +181,7 @@ public:
         return DIV;
     }
 
+    //get head data in byte
     vector<unsigned char> GetHead(){
         vector<unsigned char> buffer;
         for(int i=0;i<2;i++){
@@ -186,15 +204,20 @@ public:
         return buffer;
     }
 
+    //get track number in int
     int GetTrackNum(){
         return track_num;
     }
-
+    
+    //get tick speed in int
     int GetTick(){
         return tick;
     }
 };
 
+//This class is for reading the Track Chunk data of a midi file
+//A Track Chunk is structured as: MTrk + Track length + Track Event
+//Seperate the each status with the mark "\r\n"
 class Track:public Header{
 private:
     long length;
@@ -264,18 +287,22 @@ public:
         return *this;
     }
 
+     //get track length in byte
     vector<unsigned char> GetTrackLengthChar(){
         return track_length_char;
     }
-
+ 
+   //get track event in byte
     vector<unsigned char> GetTrackEvent(){
         return Event;
     }
 
+    //get track data in byte
     vector<unsigned char> GetTrack(){
         return track;
     }
-
+      
+    //get track length in int
     int GetTrackLength(){
         return length;
     }
@@ -283,7 +310,12 @@ public:
 
 };
 
-
+//This class is for reading the Notation of a midi file
+//A Notation is structured as: Speed + command nibble + Data
+//Speed is determined as VLV:80~8F + length or length 
+//command nibble: 80~FF
+//Seperate each status with the mark "\r\n"
+//Seperate tracks with the mark"00 2F FF 00"
 class Notation_Event:public Track{
 private:
     long nota_size;
@@ -301,6 +333,7 @@ public:
 
            while(i<nota_size){
 
+               // Judege the length
                if((track_nota[i]==0x00)&&(track_nota[i+1]==0xFF)&&(track_nota[i+2]==0x2F)&&(track_nota[i+3]==0x00)){
                    end_flag = intTostring(tick)+'\t'+"ff 2f 00"+"\r\n";
                    tracknotas.push_back(end_flag);
@@ -335,6 +368,7 @@ public:
                    tick = tick+delta;
                }
 
+               //Judge the status
                if((track_nota[i+1]>=0xB0)&&(track_nota[i+1]<0xC0)){
                    if((track_nota[i+2]>=0x66)&&(track_nota[i+2]<=0x77)){
 
@@ -428,8 +462,6 @@ public:
                    i=i+length+4;
                }
                else{
-                   delta = track_nota[i];
-                   tick = tick+delta;
                    string note = ByteToString(track_nota[i+1]);
                    string pitch = ByteToString(track_nota[i+2]);
                    string loudness = ByteToString(track_nota[i+3]);
@@ -446,18 +478,22 @@ public:
         end_flag.empty();
     }
 
+    // get the notation 
     vector<string> GetNotation(){
         return tracknotas;
     }
 
 };
 
+
+//This class is for reading the Meta data of a midi file
+//A Meata is structured as: Speed + FF + Meta type + Meta length + Meta Event
+//Seperate the data with the mark "|"
 class Seperate_Event:public Track{
 private:
     unsigned char meta_type;
     unsigned char *data;
     vector<unsigned char> meta_char;
-    vector<unsigned char> nota_char;
     void swap(Seperate_Event& orig){
         unsigned char* temp1=data;
         data=orig.data;
@@ -495,17 +531,12 @@ public:
               meta_char.push_back('|');
               i--;
            }
-           else{
-              nota_char.push_back(track_midi_event[i]);
-              meta_char.push_back(meta_type);
-           }
         }
     }
 
     ~Seperate_Event(){
         delete []data;
          meta_char.clear();
-         nota_char.clear();\
     }
 
     Seperate_Event& operator=(Seperate_Event orig){
@@ -513,24 +544,22 @@ public:
         return *this;
     }
 
+     // get Meta Data in byte
     vector<unsigned char> GetMetaListChar(){
         return meta_char;
     }
-
-    vector<unsigned char> GetNotationChar(){
-        return nota_char;
-    }
 };
 
-
+//write Header Chunk in Header.hex file
 void WriteHeader(vector<unsigned char> data){
-    ofstream file("MThd.hex",ios::binary);
+    ofstream file("Header.hex",ios::binary);
     for(int i=0;i<data.size();i++){
         file.write((char*)&data[i],sizeof(data[i]));
     }
     file.close();
 }
 
+//write Track Chunk in Track.hex file
 void WriteTrack(vector<unsigned char> data){
     ofstream file("Track.hex",ios::binary);
     for(long i=0;i<data.size();i++){
@@ -539,6 +568,7 @@ void WriteTrack(vector<unsigned char> data){
     file.close();
 }
 
+//write Meta Data in Meta.hex file
 void WriteMeta(vector<unsigned char> data){
     ofstream file("Meta.hex",ios::binary);
     for(int i=0;i<data.size();i++){
@@ -547,15 +577,12 @@ void WriteMeta(vector<unsigned char> data){
     file.close();
 }
 
-void WriteNota(vector<unsigned char> data){
-    ofstream file("Notation.hex",ios::binary);
-    for(long i=0;i<data.size();i++){
-        file.write((char*)&data[i],sizeof(data[i]));
-    }
-    file.close();
-}
-
-
+//Read the notation and write in the Notation.txt file
+//Format:
+//      Tick speed
+//      Track Number
+//      Track Event 
+//      End flag
 void ReadNota(string tick,int tracks,vector<string> notation){
     ofstream file("Notation.txt");
 
@@ -606,9 +633,6 @@ void Read(const char* temp,int file_size){
         Seperate_Event m(temp,file_size);
         Meta_event = m.GetMetaListChar();
         WriteMeta(Meta_event);
-
-        Nota_event = m.GetNotationChar();
-        WriteNota(Nota_event);
 
         Notation_Event n(temp,file_size);
         vector<string> nota=n.GetNotation();
