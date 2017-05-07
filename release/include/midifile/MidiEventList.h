@@ -1,7 +1,3 @@
-//
-// Programmer:    Craig Stuart Sapp <craig@ccrma.stanford.edu>
-// Creation Date: Sat Feb 14 21:55:38 PST 2015
-// Last Modified: Sat Feb 14 21:55:40 PST 2015
 // Filename:      midifile/include/MidiEventList.h
 // Website:       http://midifile.sapp.org
 // Syntax:        C++11
