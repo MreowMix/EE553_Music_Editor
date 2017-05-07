@@ -2,7 +2,9 @@
 #include <string>
 
 #include "include/drawStaff.h"
+#include "include/pdfexport.h"
 #include "mainWindow.h"
+std::string globalFile;
 MainWindow::MainWindow()
 {
     createActions();
@@ -19,7 +21,7 @@ void MainWindow::open()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open Midi File"), QDir::currentPath(), tr("Midi files (*.mid)"));
     std::string fileNameStr = fileName.toStdString().c_str();
-
+    globalFile = fileNameStr;
     QWidget *widget = new QWidget;
     setCentralWidget(widget);
 
@@ -49,6 +51,12 @@ void MainWindow::open()
 
 void MainWindow::save()
 {
+    drawStaff staff(globalFile, "treble");
+    vector<note> noteArray = staff.buildNoteArray();
+    PDFexport * saveFile = new PDFexport;
+    saveFile->readVector(noteArray);
+    QString mes = QString::fromStdString(globalFile + " saved.");
+    statusBar()->showMessage(mes);
 }
 
 
@@ -75,6 +83,7 @@ void MainWindow::createMenus()
 {
     fileMenu = menuBar()->addMenu(tr("&File"));
     fileMenu->addAction(openAct);
+    fileMenu->addAction(saveAct);
     fileMenu->addAction(exitAct);
 
 }
