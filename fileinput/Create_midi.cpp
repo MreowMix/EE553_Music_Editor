@@ -7,10 +7,10 @@
 using namespace std;
 
 
+
+//The same use as the Read_midi.cpp
 extern int TRACK_NUMBER;
 extern vector<unsigned char> Head_Data;
-
-
 extern vector<unsigned char> Track_Data;
 extern vector<unsigned char> Track_Length;
 extern vector<unsigned char> Track_event;
@@ -18,11 +18,13 @@ extern vector<unsigned char> Meta_Type;
 extern vector<unsigned char> Meta_Length;
 extern vector<unsigned char> Meta_event;
 extern vector<unsigned char> Nota_event;
-extern void Read(const char* file);
-extern void Read(const char* filename,int file_size);
+extern void Create(const char* filename);
 extern char CharTrans(int n);
 extern string CharToString(char first ,char second);
 
+//Create a new Header Chunk
+//A Header Chunk is structured as: MThd + Header length + Format + Track Number + Tick Speed
+//Default as 1 Track , Speed as 120
 class Header{
 private:
     string Head="MThd";
@@ -51,6 +53,7 @@ public:
         delete []Speed;
     }
 
+    // set Header Trunck
     vector<unsigned char> setHead(){
         vector<unsigned char> buffer;
         const char *buffer1;
@@ -64,7 +67,7 @@ public:
         return buffer;
     }
 
-
+    //set Format
     vector<unsigned char> setFormat(){
         vector<unsigned char> buffer;
         for(int i=0;i<2;i++){
@@ -72,7 +75,8 @@ public:
         }
         return buffer;
     }
-
+   
+    //set Track number
     vector<unsigned char> setNum(){
         vector<unsigned char> buffer;
         for(int i=0;i<2;i++){
@@ -81,6 +85,7 @@ public:
         return buffer;
     }
 
+    //set Tick Speed
     vector<unsigned char> setSpeed(){
         vector<unsigned char> buffer;
         for(int i=0;i<2;i++){
@@ -90,6 +95,10 @@ public:
     }
 };
 
+
+//Create a new Track Chunk
+//A Track Chunk is structured as: MTrk + Track length + Track Event
+//Defalut as 1 Meta Event and no notation
 class Track{
 private:
     string Track_head="MTrk";
@@ -123,6 +132,7 @@ public:
         meta_event[10]=0x00;
     }
 
+    //set Track Data
     vector<unsigned char> setTrack(){
         vector<unsigned char> buffer;
         const char *buffer1;
@@ -133,6 +143,7 @@ public:
         return buffer;
     }
 
+    //set Track length
     vector<unsigned char> setTrackLength(){
         vector<unsigned char> buffer;
         for(int i=0;i<4;i++){
@@ -141,6 +152,7 @@ public:
         return buffer;
     }
 
+    //set Track Event
     vector<unsigned char> setTrackEvent(){
         vector<unsigned char> buffer;
         for(int i=0;i<11;i++){
@@ -148,12 +160,9 @@ public:
         }
         return buffer;
     }
-
-
-
 };
 
-
+//Write a new midi file
 void WriteHeader1(vector<unsigned char> data){
     ofstream file("New.midi",ios::binary);
     for(int i=0;i<data.size();i++){
@@ -162,6 +171,7 @@ void WriteHeader1(vector<unsigned char> data){
     file.close();
 }
 
+//Append new data into the midi file
 void WriteHeaderApp1(vector<unsigned char> data){
     ofstream file("New.midi",ios::binary|ios::app);
     for(int i=0;i<data.size();i++){
@@ -170,9 +180,7 @@ void WriteHeaderApp1(vector<unsigned char> data){
     file.close();
 }
 
-
-
-
-void Create(){
+//wait for use
+void Create(const char* filename){
 
 }
