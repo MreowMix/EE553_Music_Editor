@@ -7,6 +7,7 @@ class QAction;
 class QActionGroup;
 class QLabel;
 class QMenu;
+class QPushButton;
 
 class MainWindow : public QMainWindow
 {
@@ -18,9 +19,11 @@ public:
 private slots:
     void open();
     void save();
+    void quit();
 
 private:
     void createActions();
+    void createButtons();
     void createMenus();
 
     QMenu *fileMenu;
@@ -28,6 +31,9 @@ private:
     QAction *saveAct;
     QAction *exitAct;
     QLabel *notationLabel;
+    QPushButton *openBut;
+    QPushButton *saveBut;
+    QPushButton *quitBut;
 };
 
 #endif

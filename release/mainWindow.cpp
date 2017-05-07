@@ -1,20 +1,23 @@
 #include <QtWidgets>
 #include <string>
-
+#include <QFileDialog>
+#include <QFile>
 #include "include/drawStaff.h"
 #include "include/pdfexport.h"
 #include "mainWindow.h"
+
 std::string globalFile;
 MainWindow::MainWindow()
 {
     createActions();
+    createButtons();
     createMenus();
 
     statusBar()->showMessage("No file currently open");
 
     setWindowTitle(tr("EE553 Midi Display"));
-    setMinimumSize(160, 160);
-    resize(1280, 720);
+    setMinimumSize(400, 160);
+    resize(400, 240);
 }
 
 void MainWindow::open()
@@ -59,6 +62,20 @@ void MainWindow::save()
     statusBar()->showMessage(mes);
 }
 
+void MainWindow::createButtons()
+{
+    openBut = new QPushButton("Open File", this);
+    openBut->setGeometry(QRect(QPoint(100, 50), QSize(100, 50)));
+    connect(openBut, &QPushButton::clicked, this, &MainWindow::open);
+
+    saveBut = new QPushButton("Export to PDF", this);
+    saveBut->setGeometry(QRect(QPoint(100, 100), QSize(100, 50)));
+    connect(saveBut, &QPushButton::clicked, this, &MainWindow::save);
+
+    quitBut = new QPushButton("Quit", this);
+    quitBut->setGeometry(QRect(QPoint(100, 150), QSize(100, 50)));
+    connect(quitBut, &QPushButton::clicked, this, &MainWindow::quit);
+}
 
 void MainWindow::createActions()
 {
@@ -86,4 +103,9 @@ void MainWindow::createMenus()
     fileMenu->addAction(saveAct);
     fileMenu->addAction(exitAct);
 
+}
+
+void MainWindow::quit()
+{
+    QCoreApplication::quit(); //adds quit slot to quitButton widget
 }
