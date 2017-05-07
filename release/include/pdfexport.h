@@ -10,14 +10,6 @@
 #include <vector>
 #include <iostream>
 using namespace std;
-/*
-#define MEASURE_LEN 240
-
-
-struct note {
-    string noteName, duration;
-    int octave, index;
-};*/
 
 class PDFexport {
 private:
@@ -58,10 +50,6 @@ public:
       doc.setHtml(htmltest);
       //doc.setPageSize(this->printer.pageRect().size());
       //doc.print(&this->printer);
-  }
-  //define page size, margins, staff size
-  void setLayout() {
-
   }
   void setPenFormat(QPen pen){
       p->setPen(pen);
@@ -107,9 +95,7 @@ public:
         }
   }
 
- void addKeySig(int xs, int ys){
 
- }
 
  void drawPage(int pos_x, int pos_y){
      drawStaffLine(pos_x, pos_y);
@@ -345,64 +331,3 @@ public:
 
 };
 
-/*
-int main(int argc, char *argv[]) {
-    QApplication app(argc, argv);
-        note n1;
-        n1.duration = "e";
-        n1.index = 1;
-        n1.noteName = "a";
-        n1.octave = 4;
-        note n2;
-        n2.duration = "e";
-        n2.index = 5;
-        n2.noteName = "b";
-        n2.octave = 4;
-        note n3;
-        n3.duration = "e";
-        n3.index = 9;
-        n3.noteName = "f";
-        n3.octave = 4;
-        note n4;
-        n4.duration = "e";
-        n4.index = 16;
-        n4.noteName = "g";
-        n4.octave = 4;
-        note n5;
-        n5.duration = "e";
-        n5.index = 1;
-        n5.noteName = "a";
-        n5.octave = 4;
-        note n6;
-        n6.duration = "e";
-        n6.index = 5;
-        n6.noteName = "b";
-        n6.octave = 4;
-        note n7;
-        n7.duration = "esh";
-        n7.index = 9;
-        n7.noteName = "f";
-        n7.octave = 4;
-        note n8;
-        n8.duration = "w";
-        n8.index = 16;
-        n8.noteName = "g";
-        n8.octave = 4;
-
-        vector<note> notes;
-        notes.push_back(n1);
-        notes.push_back(n2);
-        notes.push_back(n3);
-        notes.push_back(n4);
-        notes.push_back(n5);
-        notes.push_back(n6);
-        notes.push_back(n7);
-        notes.push_back(n8);
-
-    PDFexport * test = new PDFexport;
-    int pos_x = 10, pos_y = 10;
-    test->setPenFormat(QPen(Qt::black, 1, Qt::SolidLine, Qt::SquareCap));
-    test->drawPage(pos_x,pos_y);
-    test->readVector(notes);
-    return 0;
-}*/
