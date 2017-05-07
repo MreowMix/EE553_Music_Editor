@@ -7,6 +7,8 @@
 using namespace std;
 
 
+//Because i need to use these paramaters to store the differnet part of a midi file and for printing
+
 //get Header Chunk Data
 vector<unsigned char> Head_Data;
 //get Track Chunk Data
