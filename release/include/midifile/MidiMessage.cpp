@@ -1,7 +1,3 @@
-//
-// Programmer:    Craig Stuart Sapp <craig@ccrma.stanford.edu>
-// Creation Date: Sat Feb 14 20:49:21 PST 2015
-// Last Modified: Sat Feb 14 21:40:31 PST 2015
 // Filename:      midifile/src-library/MidiMessage.cpp
 // Website:       http://midifile.sapp.org
 // Syntax:        C++11
