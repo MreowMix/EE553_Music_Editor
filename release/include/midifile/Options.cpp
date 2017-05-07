@@ -1,7 +1,3 @@
-//
-// Programmer:    Craig Stuart Sapp <craig@ccrma.stanford.edu>
-// Creation Date: Sun Apr  5 13:07:18 PDT 1998
-// Last Modified: Sat Mar  1 09:31:01 PST 2014 Implemented with STL.
 // Filename:      Options.cpp
 // Web Address:   https://github.com/craigsapp/optionlib/blob/master/include/Options.h
 // Documentation: http://sig.sapp.org/doc/classes/Options
