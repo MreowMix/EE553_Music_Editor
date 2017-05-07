@@ -23,33 +23,36 @@ MainWindow::MainWindow()
 void MainWindow::open()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open Midi File"), QDir::currentPath(), tr("Midi files (*.mid)"));
-    std::string fileNameStr = fileName.toStdString().c_str();
-    globalFile = fileNameStr;
-    QWidget *widget = new QWidget;
-    setCentralWidget(widget);
 
-    drawStaff staff(fileNameStr, "treble");
-    vector<note> noteArray = staff.buildNoteArray();
+    if(!fileName.isEmpty()&& !fileName.isNull()){
+        std::string fileNameStr = fileName.toStdString().c_str();
+        globalFile = fileNameStr;
+        QWidget *widget = new QWidget;
+        setCentralWidget(widget);
 
-    for (int i = 0; i < noteArray.size(); i++) {
-        if (noteArray[i].index == 1) {
-            if (i == 0) {staff.newMeasure(true, false);}
-            else {staff.newMeasure(false, false);}    
+        drawStaff staff(fileNameStr, "treble");
+        vector<note> noteArray = staff.buildNoteArray();
+
+        for (int i = 0; i < noteArray.size(); i++) {
+            if (noteArray[i].index == 1) {
+                if (i == 0) {staff.newMeasure(true, false);}
+                else {staff.newMeasure(false, false);}
+            }
+            staff.drawNotes(noteArray[i].noteName, noteArray[i].octave, noteArray[i].duration, noteArray[i].index);
         }
-        staff.drawNotes(noteArray[i].noteName, noteArray[i].octave, noteArray[i].duration, noteArray[i].index);
+
+        QPicture pi;
+        pi = staff.display();
+        notationLabel = new QLabel(this);
+        notationLabel->setPicture(pi);
+        notationLabel->setAlignment(Qt::AlignCenter);
+        statusBar()->showMessage(fileName);
+
+        QVBoxLayout *layout = new QVBoxLayout;
+        layout->setMargin(5);
+        layout->addWidget(notationLabel);
+        widget->setLayout(layout);
     }
-
-    QPicture pi;
-    pi = staff.display();
-    notationLabel = new QLabel(this);
-    notationLabel->setPicture(pi);
-    notationLabel->setAlignment(Qt::AlignCenter);
-    statusBar()->showMessage(fileName);
-
-    QVBoxLayout *layout = new QVBoxLayout;
-    layout->setMargin(5);
-    layout->addWidget(notationLabel);
-    widget->setLayout(layout);
 }
 
 void MainWindow::save()
@@ -74,7 +77,7 @@ void MainWindow::createButtons()
 
     quitBut = new QPushButton("Quit", this);
     quitBut->setGeometry(QRect(QPoint(100, 150), QSize(100, 50)));
-    connect(quitBut, &QPushButton::clicked, this, &MainWindow::quit);
+    connect(quitBut, &QPushButton::clicked, this, &QWidget::close);
 }
 
 void MainWindow::createActions()
