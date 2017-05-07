@@ -10,30 +10,40 @@
 
 using namespace std;
 
-//get head data
+//get head data，because i need to use the track number
 extern vector<unsigned char> Head_Data;
-//get track data
+
+//get track data, because i need to get the notation
 extern vector<unsigned char> Track_Data;
-//get track length
+
+//get track length,because i need to set the size for store the notation
 extern vector<unsigned char> Track_Length;
-//get track event
+
+//get track event, because i need to seperate the notation
 extern vector<unsigned char> Track_event;
-//get meta type
+
+//get meta type, becuase i need to get the meta for the furture use
 extern vector<unsigned char> Meta_Type;
-//get meta length
+
+//get meta length,because i need to get the size for store the meta
 extern vector<unsigned char> Meta_Length;
-//get meta event
+
+//get meta event, becuase i need to print out the meta
 extern vector<unsigned char> Meta_event;
-//get notation event
+
+//get notation event,because i need to print out the notation 
 extern vector<unsigned char> Nota_event;
-//read filename and file size
+
+//read filename and file size,because i need to get which file to read
 extern void Read(const char* temp,int file_size);
 
-//transfer char to printout
+//transfer char to printout,because the data is read as byte and print out as the char
 char CharTrans(int n);
-//transfer byte to string
+
+//transfer byte to string,because i need to combined the chars as a string
 string ByteToString(unsigned char n);
-//transfer int to string
+
+//transfer int to string, because i need to read the length as int and print out as string
 string intTostring(int n);
 
 
@@ -73,6 +83,7 @@ public:
           return *this;
       }
 
+      //get data, because i need to use this data to get different parts of the data
       vector<unsigned char> Getdata(){
           vector<unsigned char> data;
           for(int i=0;i<size;i++){
@@ -81,6 +92,7 @@ public:
           return data;
       }
 
+      //get size, because i need to know the size for check
       int Getsize(){
           return size;
       }
@@ -148,7 +160,7 @@ public:
         return *this;
     }
 
-    //get Format
+    //get Format,because i need to know the format
     vector<unsigned char> GetFormat(){
         vector<unsigned char> format;
         for(int i=0;i<2;i++){
@@ -159,7 +171,7 @@ public:
         return format;
     }
 
-     //get track number in byte
+     //get track number in byte,because i need to know the numbers of track for checking
     vector<unsigned char> GetTrackNumChar(){
         vector<unsigned char> Num;
         for(int i=0;i<2;i++){
@@ -170,7 +182,7 @@ public:
         return Num;
     }
 
-    //get speed in byte
+    //get speed in byte,because i need to know the speed for checking
     vector<unsigned char> GetDIV(){
         vector<unsigned char> DIV;
         for(int i=0;i<2;i++){
@@ -181,7 +193,7 @@ public:
         return DIV;
     }
 
-    //get head data in byte
+    //get head data in byte, for seperating the head data
     vector<unsigned char> GetHead(){
         vector<unsigned char> buffer;
         for(int i=0;i<2;i++){
@@ -204,12 +216,12 @@ public:
         return buffer;
     }
 
-    //get track number in int
+    //get track number in int,because i need to know the numbers of track for printing
     int GetTrackNum(){
         return track_num;
     }
     
-    //get tick speed in int
+    //get tick speed in int,because i need to print out the speed
     int GetTick(){
         return tick;
     }
@@ -287,7 +299,7 @@ public:
         return *this;
     }
 
-     //get track length in byte
+     //get track length in byte,because i need to know the length for checking
     vector<unsigned char> GetTrackLengthChar(){
         return track_length_char;
     }
@@ -297,12 +309,12 @@ public:
         return Event;
     }
 
-    //get track data in byte
+    //get track data in byte,because i need to use the track data to get the notation
     vector<unsigned char> GetTrack(){
         return track;
     }
       
-    //get track length in int
+    //get track length in int, becuase i need to know the size to get the notation
     int GetTrackLength(){
         return length;
     }
@@ -333,7 +345,8 @@ public:
 
            while(i<nota_size){
 
-               // Judege the length
+               // Judege the length, because the speed is stored as VLV form
+               // Judege the end of a track, because i need to seperate different tracks
                if((track_nota[i]==0x00)&&(track_nota[i+1]==0xFF)&&(track_nota[i+2]==0x2F)&&(track_nota[i+3]==0x00)){
                    end_flag = intTostring(tick)+'\t'+"ff 2f 00"+"\r\n";
                    tracknotas.push_back(end_flag);
@@ -368,7 +381,8 @@ public:
                    tick = tick+delta;
                }
 
-               //Judge the status
+               //Judge the status, because each status should be printed out as one line
+               //The rule of different status are different , so i need to follow the certain rule to print out
                if((track_nota[i+1]>=0xB0)&&(track_nota[i+1]<0xC0)){
                    if((track_nota[i+2]>=0x66)&&(track_nota[i+2]<=0x77)){
 
@@ -478,7 +492,7 @@ public:
         end_flag.empty();
     }
 
-    // get the notation 
+    // get the notation ,because i need to print out the notation
     vector<string> GetNotation(){
         return tracknotas;
     }
@@ -544,13 +558,13 @@ public:
         return *this;
     }
 
-     // get Meta Data in byte
+     // get Meta Data in byte, because i nened to know the Meta data for checking
     vector<unsigned char> GetMetaListChar(){
         return meta_char;
     }
 };
 
-//write Header Chunk in Header.hex file
+//write Header Chunk in Header.hex file, because i need to store the header data
 void WriteHeader(vector<unsigned char> data){
     ofstream file("Header.hex",ios::binary);
     for(int i=0;i<data.size();i++){
@@ -559,7 +573,7 @@ void WriteHeader(vector<unsigned char> data){
     file.close();
 }
 
-//write Track Chunk in Track.hex file
+//write Track Chunk in Track.hex file,because i need to store the Track data 
 void WriteTrack(vector<unsigned char> data){
     ofstream file("Track.hex",ios::binary);
     for(long i=0;i<data.size();i++){
@@ -568,7 +582,7 @@ void WriteTrack(vector<unsigned char> data){
     file.close();
 }
 
-//write Meta Data in Meta.hex file
+//write Meta Data in Meta.hex file, because i need to store the meta data
 void WriteMeta(vector<unsigned char> data){
     ofstream file("Meta.hex",ios::binary);
     for(int i=0;i<data.size();i++){
@@ -583,6 +597,7 @@ void WriteMeta(vector<unsigned char> data){
 //      Track Number
 //      Track Event 
 //      End flag
+// Because i need to print out the notation for editing
 void ReadNota(string tick,int tracks,vector<string> notation){
     ofstream file("Notation.txt");
 
@@ -615,6 +630,7 @@ void ReadNota(string tick,int tracks,vector<string> notation){
     file.close();
 }
 
+//Because i know the filename and the file size, i should read the data to print out the notation
 void Read(const char* temp,int file_size){
 
         Header h1(temp,file_size);
