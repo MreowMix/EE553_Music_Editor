@@ -4,6 +4,8 @@
 #include<string>
 using namespace std;
 
+
+//Transfer the char for printing out
 char CharTrans(int n){
 
      switch(n){
@@ -27,7 +29,7 @@ char CharTrans(int n){
 }
 
 
-
+//Transfer byte into string
 string ByteToString(unsigned char n){
     int first= n/16;
     int second = n%16;
@@ -39,6 +41,7 @@ string ByteToString(unsigned char n){
     return buffer;
 }
 
+//transfer int to string
 string intTostring(int n){
     int j=1,i=0;
     vector<char> newstring;
