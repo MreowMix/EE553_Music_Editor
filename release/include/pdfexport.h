@@ -95,8 +95,6 @@ public:
         }
   }
 
-
-
  void drawPage(int pos_x, int pos_y){
      drawStaffLine(pos_x, pos_y);
      addTimeSig(pos_x,pos_y);
@@ -150,6 +148,31 @@ public:
  void addNotes(int xs, int ys, string note, int octave, QString duration, int startIndex, int sharpOrFlat = 0) {
    p->setPen(QPen(Qt::black, 2, Qt::SolidLine, Qt::SquareCap));
    p->setFont(QFont("Norfolk Std", 14));
+   if(note=="r"){
+      //if we have a rest we don't care what clef we are in
+       if(duration=="w"){
+           p->setPen(QPen(Qt::black, 2, Qt::SolidLine, Qt::SquareCap));
+           p->drawLine(xs+((startIndex -1)*10),ys+12,xs+((startIndex -1)*10)+5,ys+12);
+         }
+       else if(duration=="h"){
+           p->setPen(QPen(Qt::black, 2, Qt::SolidLine, Qt::SquareCap));
+           p->drawLine(xs+((startIndex -1)*10),ys+8,xs+((startIndex -1)*10)+5,ys+8);
+         }
+       else if(duration =="dh"){
+           p->setPen(QPen(Qt::black, 2, Qt::SolidLine, Qt::SquareCap));
+           p->drawLine(xs+((startIndex -1)*10),ys+8,xs+((startIndex -1)*10)+5,ys+8);
+           p->setFont(QFont("Norfolk Std", 16));
+           p->drawText(xs+((startIndex -1)*10)+8,ys+8,".");
+           p->setFont(QFont("Norfolk Std", 14));
+         }
+       else if(duration=="q"){
+           p->drawText(xs+((startIndex -1)*10),ys+10, "");
+         }
+       else if(duration=="e"){
+           p->drawText(xs+((startIndex -1)*10),ys+10, "");
+          }
+    }
+
    //just dealing with treble clef and notes that fall on treble clef for now
    //if index == 1 we just started a new measure so we should draw a bar line before we start
    if(clef == "treble"){
