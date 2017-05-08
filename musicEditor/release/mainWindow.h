@@ -19,7 +19,6 @@ public:
 private slots:
     void open();
     void save();
-    void quit();
 
 private:
     void createActions();
