@@ -2,6 +2,7 @@
 #include <string>
 #include <QFileDialog>
 #include <QFile>
+#include "include/readHex.h"
 #include "include/drawStaff.h"
 #include "include/pdfexport.h"
 #include "mainWindow.h"
@@ -29,7 +30,26 @@ void MainWindow::open()
     QString fileName = QFileDialog::getOpenFileName(this, 
     tr("Open Midi File"), QDir::currentPath(), tr("Midi files (*.mid)"));
 
+
     if(!fileName.isEmpty()&& !fileName.isNull()){
+
+        // Block to read midi to hex data (Peter)
+        QFile file(fileName);
+
+        if(!file.open(QIODevice::ReadOnly)) {
+            //display error message box
+            QMessageBox::critical(this, tr("Error"), tr("Could not open file"));
+            return;
+        }
+        QTextStream in(&file);
+
+        char* temp =new char[file.size()];
+        file.read(temp,file.size());
+        midiToHex(temp,file.size());
+        file.close();
+        // End block to read midi to hex data
+        
+
         std::string fileNameStr = fileName.toStdString().c_str();
         globalFile = fileNameStr;
         QWidget *widget = new QWidget;
@@ -79,13 +99,13 @@ void MainWindow::save()
       }
     }
     if(! (globalFile=="")){
-    drawStaff staff(globalFile, "treble");
-    vector<note> noteArray = staff.buildNoteArray();
-    PDFexport * saveFile = new PDFexport;
-    saveFile->readVector(noteArray);
-    QString mes = QString::fromStdString(globalFile + " saved.");
-    statusBar()->showMessage(mes);
-        }
+        drawStaff staff(globalFile, "treble");
+        vector<note> noteArray = staff.buildNoteArray();
+        PDFexport * saveFile = new PDFexport;
+        saveFile->readVector(noteArray);
+        QString mes = QString::fromStdString(globalFile + " saved.");
+        statusBar()->showMessage(mes);
+    }
 }
 
 // creates QActions for open, save, and exit
