@@ -430,8 +430,6 @@ public:
                    i=i+length+4;
                }
                else{
-                   delta = track_nota[i];
-                   tick = tick+delta;
                    string note = ByteToString(track_nota[i+1]);
                    string pitch = ByteToString(track_nota[i+2]);
                    string loudness = ByteToString(track_nota[i+3]);
