@@ -7,7 +7,7 @@
 #include <iostream>
 #include <sstream>
 
-#include "readMidi.h"
+#include "notationeditor.h"
 using namespace std;
 
 
@@ -16,7 +16,7 @@ using namespace std;
 
 /*
 This class facilitates in drawing the music notation in the GUI using a vector
-of "notes" output by the accompanying readMidi class
+of "notes" output by the accompanying notationEditor class
 */
 class drawStaff{
 private:
@@ -440,10 +440,10 @@ public:
         }
     }
 
-    // builds a note array from the midifile read in by the readMidi class
+    // builds a note array from the midifile read in by the notationEditor class
     // this is iterated through to render the music note by note
     vector<note> buildNoteArray(){
-        readMidi myMidi(midiFileName);
+        notationEditor myMidi(midiFileName);
         timesig = myMidi.timesig;
         vector<note> noteArray = myMidi.buildArray();
         return noteArray;

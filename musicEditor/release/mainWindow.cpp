@@ -2,6 +2,7 @@
 #include <string>
 #include <QFileDialog>
 #include <QFile>
+#include "include/read.h"
 #include "include/drawStaff.h"
 #include "include/pdfexport.h"
 #include "mainWindow.h"
@@ -29,6 +30,23 @@ void MainWindow::open()
     tr("Open Midi File"), QDir::currentPath(), tr("Midi files (*.mid)"));
 
     if(!fileName.isEmpty()&& !fileName.isNull()){
+
+        //read midi file into a notation file
+        QFile file(fileName);
+
+        if(!file.open(QIODevice::ReadOnly)) {
+            //display error message box
+            QMessageBox::critical(this, tr("Error"), tr("Could not open file"));
+            return;
+        }
+        QTextStream in(&file);
+
+        char* temp =new char[file.size()];
+        file.read(temp,file.size());
+        Readmidi(temp,file.size());
+        file.close();
+
+        //draw the noatation
         std::string fileNameStr = fileName.toStdString().c_str();
         globalFile = fileNameStr;
         QWidget *widget = new QWidget;
