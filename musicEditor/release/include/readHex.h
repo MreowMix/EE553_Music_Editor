@@ -620,10 +620,10 @@ void ReadNota(string tick,int tracks,vector<string> notation)throw(bad_alloc){
 
     string a;
      a.assign(buf);
-     a=a.append("\\..\\");
-     a=a.append("\\..\\");
+     //a=a.append("\\..\\");
+     //a=a.append("\\..\\");
 
-    ofstream file(a+"/notation/Notation.txt");
+    ofstream file("midiHex.txt");
 
     file<<"TPQ: "<<tick<<endl;
 
@@ -655,7 +655,7 @@ void ReadNota(string tick,int tracks,vector<string> notation)throw(bad_alloc){
 }
 
 //Because i know the filename and the file size, i should read the data to print out the notation
-void Readmidi(const char* temp,int file_size)throw(bad_alloc){
+void midiToHex(const char* temp,int file_size)throw(bad_alloc){
 
         Header h1(temp,file_size);
 

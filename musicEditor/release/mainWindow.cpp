@@ -2,7 +2,7 @@
 #include <string>
 #include <QFileDialog>
 #include <QFile>
-#include "include/read.h"
+#include "include/readHex.h"
 #include "include/drawStaff.h"
 #include "include/pdfexport.h"
 #include "mainWindow.h"
@@ -29,7 +29,7 @@ void MainWindow::open()
     QString fileName = QFileDialog::getOpenFileName(this, 
     tr("Open Midi File"), QDir::currentPath(), tr("Midi files (*.mid)"));
 
-    if(!fileName.isEmpty()&& !fileName.isNull()){
+    if(!fileName.isEmpty() && !fileName.isNull()){
 
         //read midi file into a notation file
         QFile file(fileName);
@@ -43,7 +43,7 @@ void MainWindow::open()
 
         char* temp =new char[file.size()];
         file.read(temp,file.size());
-        Readmidi(temp,file.size());
+        midiToHex(temp,file.size());
         file.close();
 
         //draw the noatation

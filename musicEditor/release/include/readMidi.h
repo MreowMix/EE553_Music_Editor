@@ -35,7 +35,7 @@ This class iterates through note events in the midi file to output an array
 of notes in sequential order to be used by drawStaff to render notation to the
 GUI and used by pdfedport to render to PDF
 */
-class notationEditor {
+class readMidi {
 private:
     int tpq;
     string file;
@@ -140,7 +140,7 @@ public:
     string timesig;
 
     // gets in useful header data from the midifile
-    notationEditor (string f = "hyruleField_museri_edit.mid") : file(f) {
+    readMidi (string f = "hyruleField_museri_edit.mid") : file(f) {
         midifile.read(file);
         tpq = midifile.getTicksPerQuarterNote();
         keysig = getKeySig();
