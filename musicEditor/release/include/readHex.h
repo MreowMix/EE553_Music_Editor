@@ -482,11 +482,10 @@ public:
                    i=i+length+4;
                }
                else if((track_nota[i+1]<0x80)){
-                   string note = ByteToString(track_nota[i+1]);
-                   string pitch = ByteToString(track_nota[i+2]);
-                   string loudness = ByteToString(track_nota[i+3]);
+                   string pitch = ByteToString(track_nota[i+1]);
+                   string velocity = ByteToString(track_nota[i+2]);
 
-                   string nota = intTostring(tick)+'\t'+note+' '+pitch+' '+loudness+"\r\n";
+                   string nota = intTostring(tick)+'\t'+"   "+pitch+' '+velocity+"\r\n";
                    tracknotas.push_back(nota);
                    i=i+3;
                }else{
