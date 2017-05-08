@@ -1,6 +1,7 @@
+//
 // Programmer:    Craig Stuart Sapp <craig@ccrma.stanford.edu>
-// Creation Date: Mon Feb 16 12:26:32 PST 2015 Adapted from binasc program.
-// Last Modified: Wed Feb 18 14:48:21 PST 2015
+// Creation Date: Sat Feb 14 21:47:39 PST 2015
+// Last Modified: Sat Feb 14 21:54:52 PST 2015
 // Filename:      midifile/include/MidiEvent.h
 // Website:       http://midifile.sapp.org
 // Syntax:        C++11

@@ -1,3 +1,4 @@
+//
 // Programmer:    Craig Stuart Sapp <craig@ccrma.stanford.edu>
 // Creation Date: Mon Feb 16 12:26:32 PST 2015 Adapted from binasc program.
 // Last Modified: Wed Feb 18 14:48:21 PST 2015
@@ -117,5 +118,6 @@ class Binasc {
 
 
 #endif /* _BINASC_H_INCLUDED */
+
 
 
