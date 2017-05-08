@@ -15,15 +15,12 @@ class PDFexport {
 private:
   string clef, timesig, keysig, title;
   int numPages;
-  QLabel l;
   QString filename;
   QPicture pi;
   QPainter * p;
   QPrinter * printer;
-  QTextDocument doc;
 
 public:
-  //ideally, we will be passing in a file created by notation class
   PDFexport(string clef = "treble", string timesig = "4/4", string keysig = "C", string title = "title") {
       //this just assigns a name to the file
       this->clef = clef;
@@ -44,17 +41,16 @@ public:
     delete printer;
  }
   //add title to first page and other pages if necessary
-  void addTitle(QString str){
-      QString htmltest = "<h1>" + str + "</h1> <p> <b>bold</b> text";
-      doc.setHtml(str);
-      doc.setHtml(htmltest);
-      //doc.setPageSize(this->printer.pageRect().size());
-      //doc.print(&this->printer);
-  }
-  void setPenFormat(QPen pen){
-      p->setPen(pen);
-  }
+//  void addTitle(QString str){
+//      QString htmltest = "<h1>" + str + "</h1> <p> <b>bold</b> text";
+//      doc.setHtml(str);
+//      doc.setHtml(htmltest);
+//      //doc.setPageSize(this->printer.pageRect().size());
+//      //doc.print(&this->printer);
+//  }
 
+
+  //drawing all staff lines for new page when new page is created
   void drawStaffLine(int xs, int ys) {
       p->setPen(QPen(Qt::black, 2, Qt::SolidLine, Qt::SquareCap));
       p->drawLine(xs, ys, xs, ys+20);
@@ -69,7 +65,7 @@ public:
       p->setPen(QPen(Qt::black, 2, Qt::SolidLine, Qt::SquareCap));
       p->drawLine(xs+750, ys, xs+750, ys+20);
   }
-
+  //adding time signature to all staff lines on new page
   void addTimeSig(int xs, int ys){
       p->setPen(QPen(Qt::black, 2, Qt::SolidLine, Qt::SquareCap));
       p->setFont(QFont("Norfolk Std", 15));
@@ -94,7 +90,7 @@ public:
           p->drawText(xs+14,ys+15,"4");
         }
   }
-
+  //calling "draw" functions to fill new page with staff lines and time signature
  void drawPage(int pos_x, int pos_y){
      drawStaffLine(pos_x, pos_y);
      addTimeSig(pos_x,pos_y);
@@ -145,7 +141,9 @@ public:
      drawPage(10,10);
  }
 
- void addNotes(int xs, int ys, string note, int octave, QString duration, int startIndex, int sharpOrFlat = 0) {
+ //reading through vector of notes output by notation team
+ //printing these notes to staff in order
+ void addNotes(int xs, int ys, string note, int octave, QString duration, int startIndex) {
    p->setPen(QPen(Qt::black, 2, Qt::SolidLine, Qt::SquareCap));
    p->setFont(QFont("Norfolk Std", 14));
    if(note=="r"){
