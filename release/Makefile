@@ -219,6 +219,7 @@ Makefile: midiToNotation.pro C:/dev/msys64/mingw64/share/qt5/mkspecs/win32-g++/q
 		C:/dev/msys64/mingw64/share/qt5/mkspecs/features/lex.prf \
 		midiToNotation.pro \
 		C:/dev/msys64/mingw64/lib/qtmaind.prl \
+		C:/dev/msys64/mingw64/lib/Qt5PrintSupport.prl \
 		C:/dev/msys64/mingw64/lib/Qt5Widgets.prl \
 		C:/dev/msys64/mingw64/lib/Qt5Gui.prl \
 		C:/dev/msys64/mingw64/lib/Qt5Core.prl
@@ -383,6 +384,7 @@ C:/dev/msys64/mingw64/share/qt5/mkspecs/features/yacc.prf:
 C:/dev/msys64/mingw64/share/qt5/mkspecs/features/lex.prf:
 midiToNotation.pro:
 C:/dev/msys64/mingw64/lib/qtmaind.prl:
+C:/dev/msys64/mingw64/lib/Qt5PrintSupport.prl:
 C:/dev/msys64/mingw64/lib/Qt5Widgets.prl:
 C:/dev/msys64/mingw64/lib/Qt5Gui.prl:
 C:/dev/msys64/mingw64/lib/Qt5Core.prl:

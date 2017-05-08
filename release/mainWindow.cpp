@@ -10,19 +10,19 @@ std::string globalFile;
 MainWindow::MainWindow()
 {
     createActions();
-    createButtons();
     createMenus();
 
     statusBar()->showMessage("No file currently open");
 
     setWindowTitle(tr("EE553 Midi Display"));
     setMinimumSize(400, 160);
-    resize(400, 240);
+    resize(1280, 720);
 }
 
 void MainWindow::open()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Midi File"), QDir::currentPath(), tr("Midi files (*.mid)"));
+    QString fileName = QFileDialog::getOpenFileName(this, 
+    tr("Open Midi File"), QDir::currentPath(), tr("Midi files (*.mid)"));
 
     if(!fileName.isEmpty()&& !fileName.isNull()){
         std::string fileNameStr = fileName.toStdString().c_str();
@@ -38,7 +38,8 @@ void MainWindow::open()
                 if (i == 0) {staff.newMeasure(true, false);}
                 else {staff.newMeasure(false, false);}
             }
-            staff.drawNotes(noteArray[i].noteName, noteArray[i].octave, noteArray[i].duration, noteArray[i].index);
+            staff.drawNotes(noteArray[i].noteName, noteArray[i].octave, 
+                            noteArray[i].duration, noteArray[i].index);
         }
 
         QPicture pi;
@@ -63,21 +64,6 @@ void MainWindow::save()
     saveFile->readVector(noteArray);
     QString mes = QString::fromStdString(globalFile + " saved.");
     statusBar()->showMessage(mes);
-}
-
-void MainWindow::createButtons()
-{
-    openBut = new QPushButton("Open File", this);
-    openBut->setGeometry(QRect(QPoint(100, 50), QSize(100, 50)));
-    connect(openBut, &QPushButton::clicked, this, &MainWindow::open);
-
-    saveBut = new QPushButton("Export to PDF", this);
-    saveBut->setGeometry(QRect(QPoint(100, 100), QSize(100, 50)));
-    connect(saveBut, &QPushButton::clicked, this, &MainWindow::save);
-
-    quitBut = new QPushButton("Quit", this);
-    quitBut->setGeometry(QRect(QPoint(100, 150), QSize(100, 50)));
-    connect(quitBut, &QPushButton::clicked, this, &QWidget::close);
 }
 
 void MainWindow::createActions()
@@ -106,9 +92,4 @@ void MainWindow::createMenus()
     fileMenu->addAction(saveAct);
     fileMenu->addAction(exitAct);
 
-}
-
-void MainWindow::quit()
-{
-    QCoreApplication::quit(); //adds quit slot to quitButton widget
 }

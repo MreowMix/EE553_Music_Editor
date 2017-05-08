@@ -23,7 +23,6 @@ private slots:
 
 private:
     void createActions();
-    void createButtons();
     void createMenus();
 
     QMenu *fileMenu;
@@ -31,9 +30,6 @@ private:
     QAction *saveAct;
     QAction *exitAct;
     QLabel *notationLabel;
-    QPushButton *openBut;
-    QPushButton *saveBut;
-    QPushButton *quitBut;
 };
 
 #endif
