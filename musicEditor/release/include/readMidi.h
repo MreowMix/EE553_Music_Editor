@@ -17,6 +17,9 @@
 #include <vector>
 using namespace std;
 
+
+// Structs defining a note (ready to be used in drawStaff) and a pitch (used to
+// convert from midi pitch value to a note name and octave)
 struct note {
     string noteName, duration;
     int octave, index;
@@ -27,6 +30,11 @@ struct pitch {
     int octave;
 };
 
+/*
+This class iterates through note events in the midi file to output an array
+of notes in sequential order to be used by drawStaff to render notation to the
+GUI and used by pdfedport to render to PDF
+*/
 class readMidi {
 private:
     int tpq;
@@ -34,6 +42,7 @@ private:
     MidiFile midifile;
     vector<pitch> pitchTable;
     vector<pitch> pitchTableGen( bool flatOrSharp = 1 ) {
+        // this just generates a standard table of midi pitches
         vector<pitch> pitchTable(128);
         for (int c = 0; c < 121; c+=12){
             pitchTable[c].noteName = "c";
@@ -130,6 +139,7 @@ public:
     int keysig;
     string timesig;
 
+    // gets in useful header data from the midifile
     readMidi (string f = "hyruleField_museri_edit.mid") : file(f) {
         midifile.read(file);
         tpq = midifile.getTicksPerQuarterNote();
@@ -139,6 +149,7 @@ public:
         pitchTable = pitchTableGen();
     }
 
+    // gets the key signature integer from the MIDI file (currently unused)
     int getKeySig() {
         int ks = 0;
         for (int event = 0; event < midifile[0].size() ; event++){
@@ -153,6 +164,7 @@ public:
         }
     }
 
+    // gets the time signature from the MIDI file
     string getTimeSig() {
         for (int event = 0; event < midifile[0].size() ; event++){
             if ((midifile[0][event][0] == 0xff) && 
@@ -168,6 +180,7 @@ public:
         }   
     }
 
+    // logic to figure out the horizontal index position of a note or rest
     int getNotePos(int startTime){
         int qpm, pos = 0;
         if (timesig == "4/4") {qpm = 4;}
@@ -183,6 +196,7 @@ public:
         return pos;
     }
 
+    // determines the rhythmtype of a note (ex: quarter note, eigth note, etc.)
     string rhythmType(double duration) {
         duration = duration / (double)tpq;
         duration = floor(duration * 100) / 100;
@@ -199,6 +213,7 @@ public:
         //return duration;   
     }
 
+    // iterates through the events in the midifile to return a vector of notes
     vector<note> buildArray(){
         vector<note> noteArray;
         double curTime, curDuration;

@@ -3,7 +3,6 @@
 #include <QPicture>
 #include <QPainter>
 #include <QFont>
-#include <QDebug>
 #include <string>
 #include <iostream>
 #include <sstream>
@@ -11,8 +10,14 @@
 #include "readMidi.h"
 using namespace std;
 
+
+// Allows configurable measure length
 #define MEASURE_LEN 220
 
+/*
+This class facilitates in drawing the music notation in the GUI using a vector
+of "notes" output by the accompanying readMidi class
+*/
 class drawStaff{
 private:
     string midiFileName;
@@ -25,7 +30,13 @@ public:
               string k = "C", int x = 0, int y = 0) : 
               midiFileName(inputFile), clef(c), timesig(t), keysig(k), 
                            pos_x(x), pos_y(y), p(&pi) {}
-    // Create a new blank measure, with flags for begin/end
+    
+    /*
+    This function creates a new measure after the total number of notes/beats
+    for a measure in the timesignature has been reached. Has flags for begin
+    and end. The begin flag tells it to render the first measure of a piece/new
+    line and places a clef and time signature
+    */
     void newMeasure(bool isBegin = false, bool isEnd = false) {
         p.setRenderHint(QPainter::Antialiasing);
         p.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::SquareCap));
@@ -45,22 +56,19 @@ public:
                 // Positioning depends on what is being drawn 
                 p.drawText(pos_x+2, pos_y+28 , "&");    
             }
-            else if (clef == "bass") {
-
-            }
-            // will add keysignatures later
-            //if keysig
 
             if (timesig == "4/4") {
                 p.setFont(QFont("Norfolk Std", 30));
                 p.drawText(pos_x+80, pos_y+10 , "4"); 
                 p.drawText(pos_x+80, pos_y+30 , "4");     
             }
+
             else if (timesig == "3/4") {
                 p.setFont(QFont("Norfolk Std", 30));
                 p.drawText(pos_x+82, pos_y+9 , "3"); 
                 p.drawText(pos_x+80, pos_y+30 , "4");  
             }
+
         pos_x = pos_x + 100;
         }
         
@@ -91,6 +99,10 @@ public:
         }
     }
 
+    /*
+    This function is a helper to render notes, rather than copying the same
+    code for every single note case
+    */
     void renderNote(int xpos, int ypos, int ind, int yoff, 
                     string dur, int sharpOrFlat = 0) {
         p.setRenderHint(QPainter::Antialiasing);
@@ -203,7 +215,7 @@ public:
 
     }
 
-    // Add notes to blank measure created by newMeasure method
+    // Uses the renderNote function to draw notes on the newly created measure
     void drawNotes(string note, int octave, string duration, int startIndex) {
         bool temp_pos = false;
         int y_offset;
@@ -428,6 +440,8 @@ public:
         }
     }
 
+    // builds a note array from the midifile read in by the readMidi class
+    // this is iterated through to render the music note by note
     vector<note> buildNoteArray(){
         readMidi myMidi(midiFileName);
         timesig = myMidi.timesig;
@@ -435,6 +449,7 @@ public:
         return noteArray;
     }
 
+    // finishes painting the music notation to the qpicture and returns it
     QPicture display() {
         p.end();
         return pi;

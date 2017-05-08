@@ -7,6 +7,8 @@
 #include "mainWindow.h"
 
 std::string globalFile;
+
+// Sets up the main qt window
 MainWindow::MainWindow()
 {
     createActions();
@@ -19,6 +21,8 @@ MainWindow::MainWindow()
     resize(1280, 720);
 }
 
+// Function executed after opening a file from the menu
+// uses the drawStaff and readMidi classes to render notation
 void MainWindow::open()
 {
     QString fileName = QFileDialog::getOpenFileName(this, 
@@ -56,6 +60,7 @@ void MainWindow::open()
     }
 }
 
+// Saves the rendered notation to a PDF using the pdf export class
 void MainWindow::save()
 {
     drawStaff staff(globalFile, "treble");
@@ -66,6 +71,7 @@ void MainWindow::save()
     statusBar()->showMessage(mes);
 }
 
+// creates QActions for open, save, and exit
 void MainWindow::createActions()
 {
     openAct = new QAction(tr("&Open..."), this);
@@ -85,6 +91,7 @@ void MainWindow::createActions()
     connect(exitAct, &QAction::triggered, this, &QWidget::close);
 }
 
+// creates the menus with behaviors defined above
 void MainWindow::createMenus()
 {
     fileMenu = menuBar()->addMenu(tr("&File"));

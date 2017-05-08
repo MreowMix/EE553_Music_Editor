@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+//declaration of classes and functions used in our instance of Main Window
+
 class QAction;
 class QActionGroup;
 class QLabel;
