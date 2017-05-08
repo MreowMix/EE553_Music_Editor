@@ -1,2 +1,12 @@
-The goal of this project is to create a Music Editor program. This program will be capable of loading and saving any MIDI files, as well as printing out a postscript or PDF transcript of the file on every platform, such as Windows XP/Vista/8.0/10.0 and Mac. The program will be designed for the guitar, since the group is most familiar with this instrument, and will mimic notations from Sibelius, a popular music notation software (Top Ten Reviews).
-The program will be capable of reading in a MIDI file and defining a number of variables to display the file. On top of this this lower level, the team will build a set of classes to represent the type of music notation, the start of the note, the end of the note, and the accompaniment. The team will create some basic menus, such as the import menus for the MIDI file and the editor interface from Qt. If possible, we will aim to edit/create new sheets & tabs. 
+# EE553 MIDI Display / Music Editor
+This is the main GitHub repository for the MIDI Diplay / Music Editor project for Dov Kruger's EE553: Engineering Programming C++ at Stevens.
+
+The main functionality of the program is to read data from simple MIDI files, use that data to construct a visual representation in standard music notation in the main GUI, and print/save that data to a PDF file.
+
+The "musicEditor" folder contains the final version of our codebase as well as some required files (specifically the Norfolk Std. font and example MIDI files).
+
+The "old" folder contains WIP code used to build and evalute our classes during development as well as additional unused code written for testing and learning purposes. 
+
+Credits:
+- Craig Sapp : https://github.com/craigsapp/midifile -- Helped facilitate parsing relevant data from input MIDI files
+- Qt Project : https://www.qt.io/developers/ -- Main gui and file I/O tookit 
