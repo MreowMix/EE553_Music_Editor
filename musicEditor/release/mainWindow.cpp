@@ -2,10 +2,10 @@
 #include <string>
 #include <QFileDialog>
 #include <QFile>
-#include "include/readHex.h"
 #include "include/drawStaff.h"
 #include "include/pdfexport.h"
 #include "mainWindow.h"
+#include <QMessageBox>
 
 std::string globalFile;
 
@@ -29,24 +29,7 @@ void MainWindow::open()
     QString fileName = QFileDialog::getOpenFileName(this, 
     tr("Open Midi File"), QDir::currentPath(), tr("Midi files (*.mid)"));
 
-    if(!fileName.isEmpty() && !fileName.isNull()){
-
-        //read midi file into a notation file
-        QFile file(fileName);
-
-        if(!file.open(QIODevice::ReadOnly)) {
-            //display error message box
-            QMessageBox::critical(this, tr("Error"), tr("Could not open file"));
-            return;
-        }
-        QTextStream in(&file);
-
-        char* temp =new char[file.size()];
-        file.read(temp,file.size());
-        midiToHex(temp,file.size());
-        file.close();
-
-        //draw the noatation
+    if(!fileName.isEmpty()&& !fileName.isNull()){
         std::string fileNameStr = fileName.toStdString().c_str();
         globalFile = fileNameStr;
         QWidget *widget = new QWidget;
@@ -81,12 +64,28 @@ void MainWindow::open()
 // Saves the rendered notation to a PDF using the pdf export class
 void MainWindow::save()
 {
+
+    //avoiding crash if user clicks save before MIDI file is opened
+    if(globalFile == ""){
+     QMessageBox msgBox;
+     msgBox.setText("No MIDI file has been opened yet.");
+     msgBox.setInformativeText("Do you want to choose a file to convert to PDF?");
+     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+     int ret = msgBox.exec();
+     if(ret==QMessageBox::Yes){
+         QString fileName = QFileDialog::getOpenFileName(this, tr("Open Midi File"), QDir::currentPath(), tr("Midi files (*.mid)"));
+         std::string fileNameStr = fileName.toStdString().c_str();
+         globalFile = fileNameStr;
+      }
+    }
+    if(! (globalFile=="")){
     drawStaff staff(globalFile, "treble");
     vector<note> noteArray = staff.buildNoteArray();
     PDFexport * saveFile = new PDFexport;
     saveFile->readVector(noteArray);
     QString mes = QString::fromStdString(globalFile + " saved.");
     statusBar()->showMessage(mes);
+        }
 }
 
 // creates QActions for open, save, and exit
