@@ -1,3 +1,9 @@
+/*Read a midi file in byte
+ *Seperate the midi file into Header Chunk, Track Chunk, Meta Trunck
+ *Print out the notation in the file
+ *Aurthor: Erwei Zhu
+ *Date: 05/01/2017
+ */
 
 #include <iostream>
 #include <fstream>
