@@ -1,3 +1,8 @@
+/*List of a midi file
+ *Aurthor: Erwei Zhu
+ *Date: 05/01/2017
+ */
+
 #ifndef MIDI_HH
 #define MIDI_HH
 #include<vector>
