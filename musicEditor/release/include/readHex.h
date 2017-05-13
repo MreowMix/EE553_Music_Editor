@@ -340,11 +340,26 @@ private:
     unsigned int tick;
     unsigned int delta;
     string end_flag;
+    vector<unsigned char> track_nota;
     vector<string> tracknotas;
+    void swap(Notation_Event& orig){
+
+        long temp1 =nota_size;
+        nota_size=orig.nota_size;
+        orig.nota_size=temp1;
+
+        unsigned int temp2=  tick;
+        tick=orig.tick;
+        orig.tick=temp2;
+
+        unsigned int temp3 =delta;
+        delta=orig.delta;
+        orig.delta=temp3;
+    }
 public:
        Notation_Event(const char* f,int s)throw(bad_alloc):Track(f,s){
            nota_size=GetTrack().size();
-           vector<unsigned char> track_nota=GetTrack();
+           track_nota=GetTrack();
 
            tick=0;
            int i=0;
@@ -366,21 +381,10 @@ public:
                }
                else if((track_nota[i]>=0x80)&&((track_nota[i]<=0x8F))){
 
-                   int time = track_nota[i]-0x80;
-                   int add =128*time;
-                   unsigned char start = track_nota[i];
+                   int vlv;
+                   tick=GetVLVTime(i,vlv);
+                   i=i+vlv;
 
-                   int j=0;
-                   while(start>=0x80){
-                       j++;
-                       start = track_nota[i+j];
-                   }
-                   for(int l=j;l>0;l--){
-                       delta = delta+(pow(add,(l-1))*(track_nota[i+1]));
-                   }
-                   delta=delta+add;
-                   tick =tick+delta;
-                   i=i+j;
                }
                else{
                    delta = track_nota[i];
@@ -392,109 +396,64 @@ public:
                if((track_nota[i+1]>=0xB0)&&(track_nota[i+1]<0xC0)){
                    if((track_nota[i+2]>=0x66)&&(track_nota[i+2]<=0x77)){
 
-                       string note = ByteToString(track_nota[i+1]);
-                       string pitch = ByteToString(track_nota[i+2]);
-
-                       string nota = intTostring(tick)+'\t'+note+' '+pitch+"\r\n";
-                       tracknotas.push_back(nota);
+                       tracknotas.push_back(WriteByteThree(i,tick));
                        i=i+3;
+
                    }
                    else{
 
-                       string note = ByteToString(track_nota[i+1]);
-                       string pitch = ByteToString(track_nota[i+2]);
-                       string loudness = ByteToString(track_nota[i+3]);
-
-                       string nota = intTostring(tick)+'\t'+note+' '+pitch+' '+loudness+"\r\n";
-                       tracknotas.push_back(nota);
+                       tracknotas.push_back(WriteByteFour(i,tick));
                        i=i+4;
                    }
                }
                else if((track_nota[i+1]>=0xC0)&&(track_nota[i+1]<0xE0)){
 
-
-                   string note = ByteToString(track_nota[i+1]);
-                   string pitch = ByteToString(track_nota[i+2]);
-
-                   string nota = intTostring(tick)+'\t'+note+' '+pitch+"\r\n";
-                   tracknotas.push_back(nota);
+                   tracknotas.push_back(WriteByteThree(i,tick));
                    i=i+3;
+
                }
                else if((track_nota[i+1]>=0xF0)&&(track_nota[i+1]<0xFF)){
                    if((track_nota[i+1]==0xF3)||(track_nota[i+1]==0xF1)){
 
-
-
-                       string note = ByteToString(track_nota[i+1]);
-                       string pitch = ByteToString(track_nota[i+2]);
-
-                       string nota = intTostring(tick)+'\t'+note+' '+pitch+"\r\n";
-                       tracknotas.push_back(nota);
+                       tracknotas.push_back(WriteByteThree(i,tick));
                        i=i+3;
+
                    }
                    else if((track_nota[i+1]==0xF2)){
 
-                       string note = ByteToString(track_nota[i+1]);
-                       string pitch = ByteToString(track_nota[i+2]);
-                       string loudness = ByteToString(track_nota[i+3]);
-
-                       string nota = intTostring(tick)+'\t'+note+' '+pitch+' '+loudness+"\r\n";
-                       tracknotas.push_back(nota);
+                       tracknotas.push_back(WriteByteFour(i,tick));
                        i=i+4;
                    }
                    else if((track_nota[i+1]==0xF0)){
 
-                       string note = ByteToString(track_nota[i+1]);
-                       int length = track_nota[i+2];
-                       string nota =intTostring(tick)+'\t'+note+' ';
-                       int start =i+3;
-                       for(int j=0;j<length;j++){
-                           nota = nota + ByteToString(track_nota[start+j])+' ';
-                       }
-                       nota=nota+"\r\n";
-                       tracknotas.push_back(nota);
-                       i=i+length+3;
+                         int length = track_nota[i+2];
+
+                         tracknotas.push_back(WriteByteF0(i,tick,length));
+                         i=i+length+3;
+
                    }
                    else{
 
-                       string note = ByteToString(track_nota[i+1]);
-
-                       string nota = intTostring(tick)+'\t'+note+"\r\n";
-                       tracknotas.push_back(nota);
+                       tracknotas.push_back(WriteByteTwo(i,tick));
                        i=i+2;
                    }
                }
                else if(track_nota[i+1]==0xFF){
-                   string note = ByteToString(track_nota[i+1]);
-                   string type = ByteToString(track_nota[i+2]);
-
 
                    int length = track_nota[i+3];
-                   string l= ByteToString(length);
 
-                   string nota =intTostring(tick)+'\t'+note+' '+type+' '+l+' ';
-                   int start =i+4;
-                   for(int j=0;j<length;j++){
-                       nota = nota + ByteToString(track_nota[start+j])+' ';
-                   }
-                   nota=nota+"\r\n";
-                   tracknotas.push_back(nota);
+                   tracknotas.push_back( WriteByteFF(i,tick,length));
                    i=i+length+4;
+
                }
                else if((track_nota[i+1]<0x80)){
-                   string pitch = ByteToString(track_nota[i+1]);
-                   string velocity = ByteToString(track_nota[i+2]);
 
-                   string nota = intTostring(tick)+'\t'+"   "+pitch+' '+velocity+"\r\n";
-                   tracknotas.push_back(nota);
+                   tracknotas.push_back( WriteByteChord(i,tick));
                    i=i+3;
-               }else{
-                   string note = ByteToString(track_nota[i+1]);
-                   string pitch = ByteToString(track_nota[i+2]);
-                   string loudness = ByteToString(track_nota[i+3]);
 
-                   string nota = intTostring(tick)+'\t'+note+' '+pitch+' '+loudness+"\r\n";
-                   tracknotas.push_back(nota);
+               }else{
+
+                   tracknotas.push_back( WriteByteFour(i,tick));
                    i=i+4;
                }
            }
@@ -502,14 +461,112 @@ public:
 
     ~Notation_Event(){
         tracknotas.clear();
+        track_nota.clear();
         end_flag.empty();
     }
 
-    // get the notation ,because i need to print out the notation
-    vector<string> GetNotation(){
-        return tracknotas;
+    Notation_Event& operator=(Notation_Event orig){
+           swap(orig);
+           return *this;
     }
 
+    //calculate the speed, because the speed follows the rule of VLV
+    int GetVLVTime(int index,int &vlv){
+
+        int time = track_nota[index]-0x80;
+        int add =128*time;
+        unsigned char start = track_nota[index];
+
+        vlv=0;
+        while(start>=0x80){
+            vlv++;
+            start = track_nota[index+vlv];
+        }
+
+        for(int j=vlv;j>0;j--){
+            delta = delta+(pow(add,(j-1))*(track_nota[j+1]));
+        }
+
+        delta=delta+add;
+        tick =tick+delta;
+        return tick;
+    }
+
+    //write two-byte note messages, because it is a type of the note form
+    string WriteByteTwo(int index,int tick){
+
+        string note = ByteToString(track_nota[index+1]);
+
+        string nota = intTostring(tick)+'\t'+note+"\r\n";
+        return nota;
+
+    }
+
+    //write three-byte note messages, because it is a type of the note form
+    string WriteByteThree(int index,int tick){
+
+        string note = ByteToString(track_nota[index+1]);
+        string pitch = ByteToString(track_nota[index+2]);
+
+        string nota = intTostring(tick)+'\t'+note+' '+pitch+"\r\n";
+        return nota;
+    }
+
+    //write four-byte note messages, because it is a type of the note form
+    string WriteByteFour(int index,int tick){
+        string note = ByteToString(track_nota[index+1]);
+        string pitch = ByteToString(track_nota[index+2]);
+        string loudness = ByteToString(track_nota[index+3]);
+
+        string nota = intTostring(tick)+'\t'+note+' '+pitch+' '+loudness+"\r\n";
+        return nota;
+    }
+
+    //write the chord, because i need to print out the chord into the notation file
+    string WriteByteChord(int index,int tick){
+        string note = ByteToString(track_nota[index+1]);
+        string pitch = ByteToString(track_nota[index+2]);
+
+        string nota = intTostring(tick)+'\t'+"   "+note+' '+pitch+"\r\n";
+        return nota;
+    }
+
+    //Wirte F0 message, because only the F0 has the specific form
+    string WriteByteF0(int index,int tick,int length){
+
+        string note = ByteToString(track_nota[index+1]);
+        string nota =intTostring(tick)+'\t'+note+' ';
+        int start =index+3;
+        for(int j=0;j<length;j++){
+            nota = nota + ByteToString(track_nota[start+j])+' ';
+        }
+
+        nota=nota+"\r\n";
+        return nota;
+    }
+
+    //write FF message, because i need to print out the meta message
+    string WriteByteFF(int index,int tick,int length){
+        string note = ByteToString(track_nota[index+1]);
+        string type = ByteToString(track_nota[index+2]);
+        string l= ByteToString(length);
+
+        string nota =intTostring(tick)+'\t'+note+' '+type+' '+l+' ';
+
+        int start =index+4;
+        for(int j=0;j<length;j++){
+            nota = nota + ByteToString(track_nota[start+j])+' ';
+        }
+
+        nota=nota+"\r\n";
+        return nota;
+    }
+    // get the notation ,because i need to print out the notation
+    vector<string> GetNotation(){
+
+        return tracknotas;
+
+    }
 };
 
 
