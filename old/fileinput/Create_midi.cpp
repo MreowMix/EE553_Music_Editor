@@ -25,7 +25,7 @@ extern string CharToString(char first ,char second);
 //Create a new Header Chunk
 //A Header Chunk is structured as: MThd + Header length + Format + Track Number + Tick Speed
 //Default as 1 Track , Speed as 120
-class Header{
+class Header_Create{
 private:
     string Head="MThd";
     char* standard;
@@ -33,7 +33,7 @@ private:
     char* Num;
     char* Speed;
 public:
-    Header():standard(new char[4]),format(new char[2]),Num(new char[2]),Speed(new char[2]){
+    Header_Create():standard(new char[4]),format(new char[2]),Num(new char[2]),Speed(new char[2]){
         standard[0]=0x00;
         standard[1]=0x00;
         standard[2]=0x00;
@@ -46,7 +46,7 @@ public:
         Speed[1]=0x78;
     }
 
-    ~Header(){
+    ~Header_Create(){
         delete []standard;
         delete []format;
         delete []Num;
@@ -99,7 +99,7 @@ public:
 //Create a new Track Chunk
 //A Track Chunk is structured as: MTrk + Track length + Track Event
 //Defalut as 1 Meta Event and no notation
-class Track{
+class Track_Create{
 private:
     string Track_head="MTrk";
     string title ="NEW";
@@ -107,7 +107,7 @@ private:
     char* meta_event;
     char* notation;
 public:
-    Track():length(new char[4]),meta_event(new char[11]){
+    Track_Create():length(new char[4]),meta_event(new char[11]){
         length[0]=0x00;
         length[1]=0x00;
         length[2]=0x00;
@@ -163,7 +163,7 @@ public:
 };
 
 //Write a new midi file
-void WriteHeader1(vector<unsigned char> data){
+void WriteInfo(vector<unsigned char> data){
     ofstream file("New.midi",ios::binary);
     for(int i=0;i<data.size();i++){
         file.write((char*)&data[i],sizeof(data[i]));
@@ -172,7 +172,7 @@ void WriteHeader1(vector<unsigned char> data){
 }
 
 //Append new data into the midi file
-void WriteHeaderApp1(vector<unsigned char> data){
+void WriteInfoApp(vector<unsigned char> data){
     ofstream file("New.midi",ios::binary|ios::app);
     for(int i=0;i<data.size();i++){
         file.write((char*)&data[i],sizeof(data[i]));
@@ -182,5 +182,19 @@ void WriteHeaderApp1(vector<unsigned char> data){
 
 //wait for use
 void Create(const char* filename){
-
+    
+    vector<unsigned char> info;
+    Header_Create h1;
+    
+    info.push_back(h1.setHead());
+    info.push_back(h1.setFormat());
+    info.push_back(h1.setNum());
+    info.push_back(h1.setSpeed());
+    
+    Track_Create t1;
+    info.push_back(h1.setTrack());
+    info.push_back(h1.setTrackLength());
+    info.push_back(h1.setTrackEvent());
+    
+    WriteInfo(info);
 }
