@@ -641,7 +641,7 @@ public:
 };
 
 //write Header Chunk in Header.hex file, because i need to store the header data
-void WriteHeader(vector<unsigned char> data)throw(bad_alloc){
+void ReadHeader(vector<unsigned char> data)throw(bad_alloc){
     ofstream file("Header.hex",ios::binary);
     for(int i=0;i<data.size();i++){
         file.write((char*)&data[i],sizeof(data[i]));
@@ -650,7 +650,7 @@ void WriteHeader(vector<unsigned char> data)throw(bad_alloc){
 }
 
 //write Track Chunk in Track.hex file,because i need to store the Track data
-void WriteTrack(vector<unsigned char> data)throw(bad_alloc){
+void ReadTrack(vector<unsigned char> data)throw(bad_alloc){
 
     ofstream file("Track.hex",ios::binary);
     for(long i=0;i<data.size();i++){
@@ -660,7 +660,7 @@ void WriteTrack(vector<unsigned char> data)throw(bad_alloc){
 }
 
 //write Meta Data in Meta.hex file, because i need to store the meta data
-void WriteMeta(vector<unsigned char> data)throw(bad_alloc){
+void ReadMeta(vector<unsigned char> data)throw(bad_alloc){
     ofstream file("Meta.hex",ios::binary);
     for(int i=0;i<data.size();i++){
         file.write((char*)&data[i],sizeof(data[i]));
@@ -675,7 +675,7 @@ void WriteMeta(vector<unsigned char> data)throw(bad_alloc){
 //      Track Event
 //      End flag
 // Because i need to print out the notation for editing
-void ReadNota(string tick,int tracks,vector<string> notation)throw(bad_alloc){
+void ReadNotaList(string tick,int tracks,vector<string> notation)throw(bad_alloc){
 
     char buf[80];
     getcwd(buf, sizeof(buf));
@@ -722,19 +722,19 @@ void midiToHex(const char* temp,int file_size)throw(bad_alloc){
         Header h1(temp,file_size);
 
         Head_Data =h1.GetHead();
-        WriteHeader(Head_Data);
+        ReadHeader(Head_Data);
 
         Track t1(temp,file_size);
 
         Track_Data =t1.GetTrackEvent();
 
-        WriteTrack(Track_Data);
+        ReadTrack(Track_Data);
 
         Track_Length=t1.GetTrackLengthChar();
 
         Seperate_Event m(temp,file_size);
         Meta_event = m.GetMetaListChar();
-        WriteMeta(Meta_event);
+        ReadMeta(Meta_event);
 
         Notation_Event n(temp,file_size);
         vector<string> nota=n.GetNotation();
@@ -742,6 +742,6 @@ void midiToHex(const char* temp,int file_size)throw(bad_alloc){
 
         string tick=intTostring(h1.GetTick());
         int tracks =h1.GetTrackNum();
-        ReadNota(tick, tracks,nota);
+        ReadNotaList(tick, tracks,nota);
 }
 
